@@ -1,1 +1,0 @@
-﻿NDSearch.OnPrefixDataLoaded("wis",["Module","File"],[["wishbone_standard_uart",,[[,,,,0,"File:wishbone_standard_uart.v:wishbone_standard_uart","SystemVerilogModule:wishbone_standard_uart"],[,"wishbone_standard_uart.v",,,1,"File:wishbone_standard_uart.v:wishbone_standard_uart.v"]]]]);

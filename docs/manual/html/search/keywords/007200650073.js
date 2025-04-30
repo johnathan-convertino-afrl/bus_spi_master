@@ -1,1 +1,0 @@
-﻿NDSearch.OnPrefixDataLoaded("res",["Function","RegisterBit"],[["reset_dut",,[[,,,,0,"File2:tb_cocotb_axi_lite.py:reset_dut"]]],["RESET_RX_BIT",,[["up_uart",,,,1,"File:up_uart.v:up_uart.RESET_RX_BIT","SystemVerilogModule:up_uart:RESET_RX_BIT"]]],["RESET_TX_BIT",,[["up_uart",,,,1,"File:up_uart.v:up_uart.RESET_TX_BIT","SystemVerilogModule:up_uart:RESET_TX_BIT"]]]]);

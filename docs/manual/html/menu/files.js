@@ -1,1 +1,0 @@
-﻿NDMenu.OnSectionLoaded("files.js",[[2,"bus_uart","File:",[[1,"axi_lite_uart.v"],[1,"up_uart.v"],[1,"wishbone_standard_uart.v"]]],[2,"bus_uart_tb","File2:",[[1,"tb_cocotb_axi_lite.py"],[1,"tb_cocotb_axi_lite.v"],[1,"tb_cocotb_up.py"],[1,"tb_cocotb_up.v"],[1,"tb_cocotb_wishbone_standard.py"],[1,"tb_cocotb_wishbone_standard.v"]]]]);

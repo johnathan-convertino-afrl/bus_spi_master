@@ -1,0 +1,88 @@
+CAPI=2:
+
+name: AFRL:device:up_spi_master:1.0.0
+description: SPI Master bus core for uP bus, register map matches Altera SPI core master mode + extended registers for data rate set and cpol/cpha.
+
+filesets:
+  src:
+    files:
+      - src/up_spi_master.v
+    file_type: verilogSource
+  
+  tb_cocotb:
+    files:
+      - tb/tb_cocotb_up.py : {file_type : user, copyto : .}
+      - tb/tb_cocotb_up.v  : {file_type : verilogSource}
+    
+  dep:
+    depend:
+      - AFRL:utility:helper:1.0.0
+      - AFRL:device_converter:axis_spi_master:1.0.0
+    
+targets:
+  default: &default
+    description: Default for IP intergration.
+    filesets: [src, dep]
+
+  sim_cocotb:
+    <<: *default
+    description: Cocotb unit tests
+    flow: sim
+    flow_options:
+      tool: icarus
+      cocotb_module: tb_cocotb_up
+      timescale: 1ns/1ns
+      vcs_options: [-timescale=1ns/1ns]
+    filesets_append: [tb_cocotb]
+    toplevel: tb_cocotb
+    parameters:
+      - ADDRESS_WIDTH
+      - BUS_WIDTH
+      - CLOCK_SPEED
+      - SELECT_WIDTH
+      - DEFAULT_RATE_DIV
+      - DEFAULT_CPOL
+      - DEFAULT_CPHA
+
+parameters:
+  ADDRESS_WIDTH:
+    datatype    : int
+    default     : 32
+    description : number of bits for address bus
+    paramtype   : vlogparam
+
+  BUS_WIDTH:
+    datatype    : int
+    default     : 4
+    description : number of bytes for data bus
+    paramtype   : vlogparam
+
+  CLOCK_SPEED:
+    datatype    : int
+    default     : 100000000
+    description : clock rate for uart_clk (this is divided for clock rate).
+    paramtype   : vlogparam
+
+  SELECT_WIDTH:
+    datatype    : int
+    default     : 1
+    description : Width of the slave select.
+    paramtype   : vlogparam
+
+  DEFAULT_RATE_DIV:
+    datatype    : int
+    default     : 0
+    description : Default rate divider register value (2^(X+1) X is DEFAULT_RATE_DIV)
+    paramtype   : vlogparam
+
+  DEFAULT_CPOL:
+    datatype    : int
+    default     : 0
+    description : Default clock polarity set to control reg ext and core.
+    paramtype   : vlogparam
+
+  DEFAULT_CPHA:
+    datatype    : int
+    default     : 0
+    description : Default clock phase set to control reg ext and core.
+    paramtype   : vlogparam

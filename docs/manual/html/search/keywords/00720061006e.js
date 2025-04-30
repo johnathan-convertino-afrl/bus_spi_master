@@ -1,1 +1,0 @@
-﻿NDSearch.OnPrefixDataLoaded("ran",["Function"],[["random_bool",,[[,,,,0,"File2:tb_cocotb_axi_lite.py:random_bool"]]]]);

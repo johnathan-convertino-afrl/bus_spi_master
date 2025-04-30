@@ -1,1 +1,0 @@
-﻿NDSearch.OnPrefixDataLoaded("reg",["RegisterBit"],[["Register",,[["up_uart","Control Register Bits",,,0,"File:up_uart.v:up_uart.Control_Register_Bits","SystemVerilogModule:up_uart:Control_Register_Bits"],["up_uart","Status Register Bits",,,0,"File:up_uart.v:up_uart.Status_Register_Bits","SystemVerilogModule:up_uart:Status_Register_Bits"]]]]);
