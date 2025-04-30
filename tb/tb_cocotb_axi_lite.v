@@ -3,7 +3,7 @@
 //
 // author:  JAY CONVERTINO
 //
-// date:    2025/04/01
+// date:    2025/04/30
 //
 // about:   Brief
 // Test bench wrapper for cocotb
@@ -36,22 +36,17 @@
 /*
  * Module: tb_cocotb
  *
- * AXI Lite based uart device.
+ * AXI Lite based SPI Master device.
  *
  * Parameters:
  *
- *   ADDRESS_WIDTH   - Width of the axi address bus
- *   BUS_WIDTH       - Number of bytes for the data bus.
- *   CLOCK_SPEED     - This is the aclk frequency in Hz
- *   BAUD_RATE       - Serial Baud, this can be any value including non-standard.
- *   PARITY_ENA      - Enable Parity for the data in and out.
- *   PARITY_TYPE     - Set the parity type, 0 = even, 1 = odd, 2 = mark, 3 = space.
- *   STOP_BITS       - Number of stop bits, 0 to crazy non-standard amounts.
- *   DATA_BITS       - Number of data bits, 1 to crazy non-standard amounts.
- *   RX_DELAY        - Delay in rx data input.
- *   RX_BAUD_DELAY   - Delay in rx baud enable. This will delay when we sample a bit (default is midpoint when rx delay is 0).
- *   TX_DELAY        - Delay in tx data output. Delays the time to output of the data.
- *   TX_BAUD_DELAY   - Delay in tx baud enable. This will delay the time the bit output starts.
+ *   ADDRESS_WIDTH    - Width of the uP address port, max 32 bit.
+ *   BUS_WIDTH        - Width of the uP bus data port(can not be less than 2 bytes, max tested is 4).
+ *   CLOCK_SPEED      - This is the aclk frequency in Hz, this is the the frequency used for the bus and is divided by the rate.
+ *   SELECT_WIDTH     - Bit width of the slave select, defaults to 16 to match altera spi ip.
+ *   DEFAULT_RATE_DIV - Default divider value of the main clock to use for the spi data output clock rate. 0 is 2 (2^(X+1) X is the DEFAULT_RATE_DIV)
+ *   DEFAULT_CPOL     - Default clock polarity for the core (0 or 1).
+ *   DEFAULT_CPHA     - Default clock phase for the core (0 or 1).
  *
  * Ports:
  *
@@ -77,24 +72,19 @@
  *   s_axi_rresp    - Axi Lite r resp
  *   s_axi_rready   - Axi Lite r ready
  *   irq            - Interrupt when data is received
- *   tx             - transmit for UART (output to RX)
- *   rx             - receive for UART (input from TX)
- *   rts            - request to send is a loop with CTS
- *   cts            - clear to send is a loop with RTS
+ *   sclk           - spi clock, should only drive output pins to devices.
+ *   mosi           - transmit for master output
+ *   miso           - receive for master input
+ *   ss_n           - slave select output
  */
 module tb_cocotb #(
     parameter ADDRESS_WIDTH     = 32,
     parameter BUS_WIDTH         = 4,
     parameter CLOCK_SPEED       = 100000000,
-    parameter BAUD_RATE         = 115200,
-    parameter PARITY_ENA        = 0,
-    parameter PARITY_TYPE       = 0,
-    parameter STOP_BITS         = 1,
-    parameter DATA_BITS         = 8,
-    parameter RX_DELAY          = 0,
-    parameter RX_BAUD_DELAY     = 0,
-    parameter TX_DELAY          = 0,
-    parameter TX_BAUD_DELAY     = 0
+    parameter SELECT_WIDTH      = 16,
+    parameter DEFAULT_RATE_DIV  = 0,
+    parameter DEFAULT_CPOL      = 0,
+    parameter DEFAULT_CPHA      = 0
   )
   (
     input                       aclk,
@@ -119,10 +109,10 @@ module tb_cocotb #(
     output  [ 1:0]              s_axi_rresp,
     input                       s_axi_rready,
     output                      irq,
-    output                      tx,
-    input                       rx,
-    output                      rts,
-    input                       cts
+    output                      sclk,
+    output                      mosi,
+    input                       miso,
+    output  [SELECT_WIDTH-1:0]  ss_n
   );
   // fst dump command
   initial begin
@@ -136,21 +126,16 @@ module tb_cocotb #(
   /*
    * Module: dut
    *
-   * Device under test, axi_lite_uart
+   * Device under test, axi_lite_spi_master
    */
-  axi_lite_uart #(
+  axi_lite_spi_master #(
     .ADDRESS_WIDTH(ADDRESS_WIDTH),
     .BUS_WIDTH(BUS_WIDTH),
     .CLOCK_SPEED(CLOCK_SPEED),
-    .BAUD_RATE(BAUD_RATE),
-    .PARITY_ENA(PARITY_ENA),
-    .PARITY_TYPE(PARITY_TYPE),
-    .STOP_BITS(STOP_BITS),
-    .DATA_BITS(DATA_BITS),
-    .RX_DELAY(RX_DELAY),
-    .RX_BAUD_DELAY(RX_BAUD_DELAY),
-    .TX_DELAY(TX_DELAY),
-    .TX_BAUD_DELAY(TX_BAUD_DELAY)
+    .SELECT_WIDTH(SELECT_WIDTH),
+    .DEFAULT_RATE_DIV(DEFAULT_RATE_DIV),
+    .DEFAULT_CPOL(DEFAULT_CPOL),
+    .DEFAULT_CPHA(DEFAULT_CPHA)
   ) dut (
     .aclk(aclk),
     .arstn(arstn),
@@ -174,10 +159,10 @@ module tb_cocotb #(
     .s_axi_rresp(s_axi_rresp),
     .s_axi_rready(s_axi_rready),
     .irq(irq),
-    .tx(tx),
-    .rx(rx),
-    .rts(rts),
-    .cts(cts)
+    .sclk(sclk),
+    .mosi(mosi),
+    .miso(miso),
+    .ss_n(ss_n)
   );
   
 endmodule

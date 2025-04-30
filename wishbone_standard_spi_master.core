@@ -1,7 +1,7 @@
 CAPI=2:
 
 name: AFRL:device:wishbone_standard_spi_master:1.0.0
-description: UART bus core for wishbone, register map matches Xilinx UART Lite.
+description: SPI bus core for wishbone, register map matches Altera SPI IP.
 
 filesets:
   src:
@@ -17,7 +17,7 @@ filesets:
   dep:
     depend:
       - AFRL:utility:helper:1.0.0
-      - AFRL:device:up_uart:1.0.0
+      - AFRL:device:up_spi_master:1.0.0
       - AFRL:bus:up_wishbone_standard:1.0.0
     
 targets:
@@ -40,16 +40,10 @@ targets:
       - ADDRESS_WIDTH
       - BUS_WIDTH
       - CLOCK_SPEED
-      - BAUD_RATE
-      - PARITY_ENA
-      - STOP_BITS
-      - DATA_BITS
-      - BAUD_RATE
-      - PARITY_TYPE
-      - RX_DELAY
-      - RX_BAUD_DELAY
-      - TX_DELAY
-      - TX_BAUD_DELAY
+      - SELECT_WIDTH
+      - DEFAULT_RATE_DIV
+      - DEFAULT_CPOL
+      - DEFAULT_CPHA
 
 parameters:
   ADDRESS_WIDTH:
@@ -64,68 +58,32 @@ parameters:
     description : number of bytes for data bus
     paramtype   : vlogparam
 
-  PARITY_ENA:
-    datatype    : int
-    default     : 0
-    description : Enable parity by setting to 1.
-    paramtype   : vlogparam
-
-  STOP_BITS:
-    datatype    : int
-    default     : 1
-    description : Number of stop bits for the uart.
-    paramtype   : vlogparam
-
-  DATA_BITS:
-    datatype    : int
-    default     : 8
-    description : Number of data bits per transmission.
-    paramtype   : vlogparam
-
-  DELAY:
-    datatype    : int
-    default     : 0
-    description : Number of clock cycles to delay transmission.
-    paramtype   : vlogparam
-
   CLOCK_SPEED:
     datatype    : int
     default     : 100000000
     description : clock rate for uart_clk (this is divided for clock rate).
     paramtype   : vlogparam
 
-  BAUD_RATE:
+  SELECT_WIDTH:
     datatype    : int
-    default     : 115200
-    description : Baud rate
+    default     : 1
+    description : Width of the slave select.
     paramtype   : vlogparam
 
-  PARITY_TYPE:
+  DEFAULT_RATE_DIV:
     datatype    : int
     default     : 0
-    description : Parity typeawait bit_t
+    description : Default rate divider register value (2^(X+1) X is DEFAULT_RATE_DIV)
     paramtype   : vlogparam
 
-  RX_DELAY:
+  DEFAULT_CPOL:
     datatype    : int
     default     : 0
-    description : RX Delay
+    description : Default clock polarity set to control reg ext and core.
     paramtype   : vlogparam
 
-  RX_BAUD_DELAY:
+  DEFAULT_CPHA:
     datatype    : int
     default     : 0
-    description : RX Baud Delay
-    paramtype   : vlogparam
-
-  TX_DELAY:
-    datatype    : int
-    default     : 0
-    description : TX Delay
-    paramtype   : vlogparam
-
-  TX_BAUD_DELAY:
-    datatype    : int
-    default     : 0
-    description : TX Baud Delay
+    description : Default clock phase set to control reg ext and core.
     paramtype   : vlogparam

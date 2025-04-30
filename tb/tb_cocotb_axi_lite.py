@@ -39,8 +39,18 @@ from cocotb.clock import Clock
 from cocotb.utils import get_sim_time
 from cocotb.triggers import FallingEdge, RisingEdge, Timer, Event
 from cocotb.binary import BinaryValue
-from cocotbext.uart import UartSource, UartSink
+from cocotbext.spi import SpiBus, SpiConfig
+from cocotbext.spi.devices.generic import SpiSlaveLoopback
 from cocotbext.axi import AxiLiteBus, AxiLiteMaster
+
+RX_DATA_REG = 0x00
+TX_DATA_REG = 0x04
+STATUS_REG = 0x08
+CONTROL_REG = 0x0C
+RESERVED = 0x10
+SLAVE_SELECT_REG = 0x14
+EOP_VALUE_REG = 0x18
+CONTROL_EXT_REG = 0x1C
 
 # Function: random_bool
 # Return a infinte cycle of random bools
@@ -69,62 +79,74 @@ async def reset_dut(dut):
   await Timer(5, units="ns")
   dut.arstn.value = 1
 
-# Function: increment_test_uart_tx
-# Coroutine that is identified as a test routine. Setup up to tx uart data.
+# Function: loop_data
+# Coroutine that is identified as a test routine. Use echo slave to loop data, check write axi equals spi slave contents, axi writes equal axi reads.
 #
 # Parameters:
 #   dut - Device under test passed from cocotb.
 @cocotb.test()
-async def increment_test_uart_tx(dut):
+async def loop_data(dut):
+
+    recv = []
+    send = []
 
     start_clock(dut)
 
-    axil_master = AxiLiteMaster(AxiLiteBus.from_prefix(dut, "s_axi"), dut.aclk, dut.arstn, False)
+    spi_bus = SpiBus.from_entity(dut, cs_name="ss_n")
 
-    uart_sink = UartSink(dut.tx, baud=dut.BAUD_RATE.value, bits=dut.DATA_BITS.value, stop_bits=dut.STOP_BITS.value)
-
-    await reset_dut(dut)
-
-    for x in range(0, 2**8):
-
-        payload_bytes = x.to_bytes(4, "little")
-
-        await axil_master.write(4, payload_bytes)
-
-        rx_data = await uart_sink.read()
-
-        assert int.from_bytes(rx_data, "little") == x, "SENT DATA OVER DOES NOT MATCH RECEIVED DATA"
-
-
-# Function: increment_test_uart_rx
-# Coroutine that is identified as a test routine. Setup up to rx uart data
-#
-# Parameters:
-#   dut - Device under test passed from cocotb.
-@cocotb.test()
-async def increment_test_uart_rx(dut):
-
-    start_clock(dut)
+    spi_config = SpiConfig(
+        word_width=int(dut.BUS_WIDTH.value*8),
+        sclk_freq=int(dut.CLOCK_SPEED.value >> 2**(dut.DEFAULT_RATE_DIV.value+1)),
+        cpol=dut.DEFAULT_CPOL.value != 0,
+        cpha=dut.DEFAULT_CPHA.value != 0,
+        msb_first=True,
+        frame_spacing_ns=0,
+        ignore_rx_value=None,
+        cs_active_low=True,
+    )
 
     axil_master = AxiLiteMaster(AxiLiteBus.from_prefix(dut, "s_axi"), dut.aclk, dut.arstn, False)
 
-    uart_source = UartSource(dut.rx, baud=dut.BAUD_RATE.value, bits=dut.DATA_BITS.value, stop_bits=dut.STOP_BITS.value)
+    spi_loop = SpiSlaveLoopback(spi_bus, spi_config)
 
     await reset_dut(dut)
 
+    # enable interrupt when data ready to read.
+    await axil_master.write(CONTROL_REG, int(1 << 8 | 1 << 7).to_bytes(dut.BUS_WIDTH.value, "little"))
+
     for x in range(0, 2**8):
+        payload_bytes = x.to_bytes(dut.BUS_WIDTH.value, "little")
 
-        data = x.to_bytes(1, byteorder="little")
+        send.append(x)
 
-        await uart_source.write(data)
+        await axil_master.write(TX_DATA_REG, payload_bytes)
 
-        status_reg = await axil_master.read(8, 4)
+        # wait for a rising edge on the irq. FUTURE: ADD TIMEOUT
+        await RisingEdge(dut.irq)
 
-        rx_data = await axil_master.read(0, 4)
+        data = await spi_loop.get_contents()
 
-        assert int.from_bytes(rx_data.data, "little") & 0x000000FF == x, "RECEIVED COMMAND OVER UP DOES NOT MATCH SOURCE DATA"
-        assert (int.from_bytes(status_reg.data, "little") >> 7) & 1 == 0, "PARITY CHECK FAILED"
-        assert int.from_bytes(status_reg.data, "little") & 1 == 1, "RECEIVED DATA IS NOT VALID"
+        assert data == x, "DATA WRITTEN FOR TRANSMIT DOES NOT MATCH SPI SLAVE CONTENTS"
+
+        rx_data = await axil_master.read(RX_DATA_REG, dut.BUS_WIDTH.value)
+
+        recv.append(int.from_bytes(rx_data.data, "little"))
+
+    #flush and last word out of spi echo slave
+    await axil_master.write(TX_DATA_REG, int(0).to_bytes(dut.BUS_WIDTH.value, "little"))
+
+    # check that the receive is ready.
+    await RisingEdge(dut.irq)
+
+    rx_data = await axil_master.read(RX_DATA_REG, dut.BUS_WIDTH.value)
+
+    recv.append(int.from_bytes(rx_data.data, "little"))
+
+    #remove first element as its the contents of the SPI core at reset, NOT a valid echo value.
+    recv.pop(0)
+
+    for r, s in zip(recv, send):
+      assert r == s, "DATA SENT DOES NOT EQUAL DATA RECEIVED"
 
 # Function: in_reset
 # Coroutine that is identified as a test routine. This routine tests if device stays
