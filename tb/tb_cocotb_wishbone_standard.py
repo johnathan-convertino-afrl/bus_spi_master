@@ -3,7 +3,7 @@
 #
 # author:  JAY CONVERTINO
 #
-# date:    2025/03/04
+# date:    2025/04/30
 #
 # about:   Brief
 # Cocotb test bench
@@ -39,8 +39,18 @@ from cocotb.clock import Clock
 from cocotb.utils import get_sim_time
 from cocotb.triggers import FallingEdge, RisingEdge, Timer, Event
 from cocotb.binary import BinaryValue
-from cocotbext.uart import UartSource, UartSink
 from cocotbext.wishbone.standard import wishboneStandardMaster
+from cocotbext.spi import SpiBus, SpiConfig
+from cocotbext.spi.devices.generic import SpiSlaveLoopback
+
+RX_DATA_REG = 0x00
+TX_DATA_REG = 0x04
+STATUS_REG = 0x08
+CONTROL_REG = 0x0C
+RESERVED = 0x10
+SLAVE_SELECT_REG = 0x14
+EOP_VALUE_REG = 0x18
+CONTROL_EXT_REG = 0x1C
 
 # Function: random_bool
 # Return a infinte cycle of random bools
@@ -69,60 +79,72 @@ async def reset_dut(dut):
   await Timer(20, units="ns")
   dut.rst.value = 0
 
-# Function: increment_test_uart_tx
-# Coroutine that is identified as a test routine. Setup up to tx uart data.
+# Function: loop_data
+# Coroutine that is identified as a test routine. Use echo slave to loop data, check write wishbone equals spi slave contents, bus writes equal bus reads.
 #
 # Parameters:
 #   dut - Device under test passed from cocotb.
 @cocotb.test()
-async def increment_test_uart_tx(dut):
+async def loop_data(dut):
+
+    recv = []
+    send = []
 
     start_clock(dut)
 
-    wishbone_master = wishboneStandardMaster(dut, "s_wb", dut.clk, dut.rst)
+    spi_bus = SpiBus.from_entity(dut, cs_name="ss_n")
 
-    uart_sink = UartSink(dut.tx, baud=dut.BAUD_RATE.value, bits=dut.DATA_BITS.value, stop_bits=dut.STOP_BITS.value)
-
-    await reset_dut(dut)
-
-    for x in range(0, 2**8):
-
-        await wishbone_master.write(4, x)
-
-        rx_data = await uart_sink.read()
-
-        assert int.from_bytes(rx_data, "little") == x, "SENT DATA OVER DOES NOT MATCH RECEIVED DATA"
-
-
-# Function: increment_test_uart_rx
-# Coroutine that is identified as a test routine. Setup up to rx uart data
-#
-# Parameters:
-#   dut - Device under test passed from cocotb.
-@cocotb.test()
-async def increment_test_uart_rx(dut):
-
-    start_clock(dut)
+    spi_config = SpiConfig(
+        word_width=int(dut.BUS_WIDTH.value*8),
+        sclk_freq=int(dut.CLOCK_SPEED.value >> 2**(dut.DEFAULT_RATE_DIV.value+1)),
+        cpol=dut.DEFAULT_CPOL.value != 0,
+        cpha=dut.DEFAULT_CPHA.value != 0,
+        msb_first=True,
+        frame_spacing_ns=0,
+        ignore_rx_value=None,
+        cs_active_low=True,
+    )
 
     wishbone_master = wishboneStandardMaster(dut, "s_wb", dut.clk, dut.rst)
 
-    uart_source = UartSource(dut.rx, baud=dut.BAUD_RATE.value, bits=dut.DATA_BITS.value, stop_bits=dut.STOP_BITS.value)
+    spi_loop = SpiSlaveLoopback(spi_bus, spi_config)
 
     await reset_dut(dut)
 
+    # enable interrupt when data ready to read.
+    await wishbone_master.write(CONTROL_REG, 1 << 8 | 1 << 7)
+
     for x in range(0, 2**8):
+        send.append(x)
 
-        data = x.to_bytes(1, byteorder="little")
+        await wishbone_master.write(TX_DATA_REG, x)
 
-        await uart_source.write(data)
+        # wait for a rising edge on the irq. FUTURE: ADD TIMEOUT
+        await RisingEdge(dut.irq)
 
-        status_reg = await wishbone_master.read(8)
+        data = await spi_loop.get_contents()
 
-        rx_data = await wishbone_master.read(0)
+        assert data == x, "DATA WRITTEN FOR TRANSMIT DOES NOT MATCH SPI SLAVE CONTENTS"
 
-        assert rx_data & 0x000000FF == x, "RECEIVED COMMAND OVER UP DOES NOT MATCH SOURCE DATA"
-        assert (status_reg >> 7) & 1 == 0, "PARITY CHECK FAILED"
-        assert status_reg & 1 == 1, "RECEIVED DATA IS NOT VALID"
+        rx_data = await wishbone_master.read(RX_DATA_REG)
+
+        recv.append(rx_data.integer)
+
+    #flush and last word out of spi echo slave
+    await wishbone_master.write(TX_DATA_REG, 0)
+
+    # check that the receive is ready.
+    await RisingEdge(dut.irq)
+
+    rx_data = await wishbone_master.read(RX_DATA_REG)
+
+    recv.append(rx_data.integer)
+
+    #remove first element as its the contents of the SPI core at reset, NOT a valid echo value.
+    recv.pop(0)
+
+    for r, s in zip(recv, send):
+      assert r == s, "DATA SENT DOES NOT EQUAL DATA RECEIVED"
 
 # Function: in_reset
 # Coroutine that is identified as a test routine. This routine tests if device stays

@@ -83,7 +83,7 @@ module wishbone_standard_spi_master #(
     input                       s_wb_we,
     input   [ADDRESS_WIDTH-1:0] s_wb_addr,
     input   [BUS_WIDTH*8-1:0]   s_wb_data_i,
-    input   [ 3:0]              s_wb_sel,
+    input   [BUS_WIDTH-1:0]     s_wb_sel,
     output                      s_wb_ack,
     output  [BUS_WIDTH*8-1:0]   s_wb_data_o,
     output                      s_wb_err,
@@ -162,8 +162,8 @@ module wishbone_standard_spi_master #(
     .DEFAULT_CPOL(DEFAULT_CPOL),
     .DEFAULT_CPHA(DEFAULT_CPHA)
   ) inst_up_spi_master (
-    .clk(aclk),
-    .rstn(arstn),
+    .clk(clk),
+    .rstn(~rst),
     .up_rreq(up_rreq),
     .up_rack(up_rack),
     .up_raddr(up_raddr),
