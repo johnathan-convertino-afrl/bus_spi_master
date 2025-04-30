@@ -30,6 +30,9 @@
 //  IN THE SOFTWARE.
 //******************************************************************************
 
+`resetall
+`default_nettype none
+
 `timescale 1ns/100ps
 
 /*
@@ -180,3 +183,5 @@ module wishbone_standard_spi_master #(
   );
 
 endmodule
+
+`resetall

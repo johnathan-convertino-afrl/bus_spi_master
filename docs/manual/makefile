@@ -1,4 +1,4 @@
-PROJECT_NAME := bus_spi
+PROJECT_NAME := bus_spi_master
 
 MK_DIR := makefiles
 

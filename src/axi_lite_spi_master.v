@@ -30,6 +30,9 @@
 //  IN THE SOFTWARE.
 //******************************************************************************
 
+`resetall
+`default_nettype none
+
 `timescale 1ns/100ps
 
 /*
@@ -206,3 +209,5 @@ module axi_lite_spi_master #(
     .ss_n(ss_n)
   );
 endmodule
+
+`resetall

@@ -1,0 +1,42 @@
+Generated on 4/30/2025 7:18:51 PM
+
+Crash Message:
+
+   Count must be positive and count must refer to a location within the string/array/collection.
+Parameter name: count (Parser Thread 3)
+   (System.ArgumentOutOfRangeException)
+
+Task:
+
+   Parsing file /home/convertinoj/Programming/HDL/fusesoc/ip_pub/device/bus_spi_master/src/up_spi_master.v
+
+Stack Trace:
+
+   ----- Parser Thread 3 -----
+  at System.String.LastIndexOf (System.String value, System.Int32 startIndex, System.Int32 count, System.StringComparison comparisonType) [0x0008e] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at System.String.LastIndexOf (System.String value, System.Int32 startIndex, System.Int32 count) [0x00017] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
+  at CodeClear.NaturalDocs.Engine.Languages.Parser.BasicPrototypeMatchesTitle (CodeClear.NaturalDocs.Engine.Topics.Topic topic, CodeClear.NaturalDocs.Engine.Tokenization.TokenIterator prototypeStart, CodeClear.NaturalDocs.Engine.Tokenization.TokenIterator prototypeEnd) [0x0006d] in <6c4aae649fee44548beb007d054c6a0e>:0 
+  at CodeClear.NaturalDocs.Engine.Languages.Parser.TryToFindBasicPrototype (CodeClear.NaturalDocs.Engine.Topics.Topic topic, CodeClear.NaturalDocs.Engine.Tokenization.TokenIterator start, CodeClear.NaturalDocs.Engine.Tokenization.TokenIterator limit, CodeClear.NaturalDocs.Engine.Tokenization.TokenIterator& prototypeStart, CodeClear.NaturalDocs.Engine.Tokenization.TokenIterator& prototypeEnd) [0x00171] in <6c4aae649fee44548beb007d054c6a0e>:0 
+  at CodeClear.NaturalDocs.Engine.Languages.Parser.TryToFindBasicPrototype (CodeClear.NaturalDocs.Engine.Topics.Topic topic, CodeClear.NaturalDocs.Engine.Tokenization.LineIterator startCode, CodeClear.NaturalDocs.Engine.Tokenization.LineIterator endCode, CodeClear.NaturalDocs.Engine.Tokenization.TokenIterator& prototypeStart, CodeClear.NaturalDocs.Engine.Tokenization.TokenIterator& prototypeEnd) [0x00066] in <6c4aae649fee44548beb007d054c6a0e>:0 
+  at CodeClear.NaturalDocs.Engine.Languages.Parser.AddBasicPrototypes (CodeClear.NaturalDocs.Engine.Tokenization.Tokenizer source, System.Collections.Generic.List`1[T] elements, System.Collections.Generic.List`1[T] possibleDocumentationComments) [0x0013a] in <6c4aae649fee44548beb007d054c6a0e>:0 
+  at CodeClear.NaturalDocs.Engine.Languages.Parser.Parse (CodeClear.NaturalDocs.Engine.Tokenization.Tokenizer source, System.Int32 fileID, CodeClear.NaturalDocs.Engine.CancelDelegate cancelDelegate, System.Collections.Generic.IList`1[CodeClear.NaturalDocs.Engine.Topics.Topic]& topics, CodeClear.NaturalDocs.Engine.Links.LinkSet& classParentLinks) [0x0015e] in <6c4aae649fee44548beb007d054c6a0e>:0 
+  at CodeClear.NaturalDocs.Engine.Languages.Parser.Parse (CodeClear.NaturalDocs.Engine.Path filePath, System.Int32 fileID, CodeClear.NaturalDocs.Engine.CancelDelegate cancelDelegate, System.Collections.Generic.IList`1[CodeClear.NaturalDocs.Engine.Topics.Topic]& topics, CodeClear.NaturalDocs.Engine.Links.LinkSet& classParentLinks) [0x0006a] in <6c4aae649fee44548beb007d054c6a0e>:0 
+  at CodeClear.NaturalDocs.Engine.Files.ChangeProcessor.ProcessNewOrChangedSourceFile (CodeClear.NaturalDocs.Engine.Files.File file, CodeClear.NaturalDocs.Engine.CodeDB.Accessor codeDBAccessor, CodeClear.NaturalDocs.Engine.CancelDelegate cancelDelegate) [0x00186] in <6c4aae649fee44548beb007d054c6a0e>:0 
+  at CodeClear.NaturalDocs.Engine.Files.ChangeProcessor.ProcessNewOrChangedFile (CodeClear.NaturalDocs.Engine.Files.File file, CodeClear.NaturalDocs.Engine.CodeDB.Accessor codeDBAccessor, CodeClear.NaturalDocs.Engine.CancelDelegate cancelDelegate) [0x00009] in <6c4aae649fee44548beb007d054c6a0e>:0 
+  at CodeClear.NaturalDocs.Engine.Files.ChangeProcessor.WorkOnProcessingChanges (CodeClear.NaturalDocs.Engine.CancelDelegate cancelDelegate) [0x0004f] in <6c4aae649fee44548beb007d054c6a0e>:0 
+  at CodeClear.NaturalDocs.Engine.Thread.InternalStart () [0x0000f] in <6c4aae649fee44548beb007d054c6a0e>:0 
+   ----- Parent Thread -----
+  at CodeClear.NaturalDocs.CLI.Application.Multithread (System.String threadName, CodeClear.NaturalDocs.Engine.CancellableTask task) [0x000b6] in <95ee6211a68e43a5bffc51f192461eb2>:0 
+  at CodeClear.NaturalDocs.CLI.Application.BuildDocumentation (CodeClear.NaturalDocs.Engine.Errors.ErrorList errorList) [0x00153] in <95ee6211a68e43a5bffc51f192461eb2>:0 
+  at CodeClear.NaturalDocs.CLI.Application.Main (System.String[] commandLine) [0x00141] in <95ee6211a68e43a5bffc51f192461eb2>:0 
+
+Command Line:
+
+   /opt/usr/natural_docs/NaturalDocs.exe config -ro
+
+Versions:
+
+   Natural Docs 2.3
+   Unix 6.8.0.57
+   Mono 6.8.0.105
+   SQLite 3.41.2
