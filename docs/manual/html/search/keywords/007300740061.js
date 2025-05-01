@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("sta",["Function","RegisterAddress"],[["start_clock",,[[,,,,0,"File2:tb_cocotb_axi_lite.py:start_clock"]]],["STATUS_REG",,[["up_spi_master",,,,1,"File:up_spi_master.v:up_spi_master.STATUS_REG","SystemVerilogModule:up_spi_master:STATUS_REG"]]]]);

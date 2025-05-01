@@ -1,0 +1,1 @@
+﻿NDMenu.OnSectionLoaded("files.js",[[2,"source","File:",[[1,"axi_lite_spi_master.v"],[1,"up_spi_master.v"],[1,"wishbone_standard_spi_master.v"]]],[2,"test_bench","File2:",[[1,"tb_cocotb_axi_lite.py"],[1,"tb_cocotb_axi_lite.v"],[1,"tb_cocotb_up.py"],[1,"tb_cocotb_up.v"],[1,"tb_cocotb_wishbone_standard.py"],[1,"tb_cocotb_wishbone_standard.v"]]]]);

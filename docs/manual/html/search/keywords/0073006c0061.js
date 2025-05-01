@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("sla",["RegisterAddress"],[["SLAVE_SELECT_REG",,[["up_spi_master",,,,0,"File:up_spi_master.v:up_spi_master.SLAVE_SELECT_REG","SystemVerilogModule:up_spi_master:SLAVE_SELECT_REG"]]]]);

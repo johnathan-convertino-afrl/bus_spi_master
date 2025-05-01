@@ -1,11 +1,11 @@
 \resizebox{!}{\height}{%
-\begin{tabular}{ |*{5}{c|} }
+\begin{tabular}{ |*{10}{c|} }
  \hline
- \multicolumn{5}{|c|}{CONTROL REGISTER} \\
+ \multicolumn{10}{|c|}{CONTROL REGISTER} \\
  \hline
- 31:5 & 4 & 3:2 & 1 & 0 \\
+ 31:11 & 10 & 9 & 8 & 7 & 6 & 5 & 4 & 3 & 2:0 \\
  \hline
- {UNUSED} & ENA\_INTR\_BIT & {UNUSED} & RST\_RX\_BIT & RST\_TX\_BIT \\
+ {UNUSED} & SSO & IEOP & IE & IRRDY & ITRDY & {UNUSED} & ITOE & IROE & {UNUSED} \\
  \hline
 \end{tabular}
 }

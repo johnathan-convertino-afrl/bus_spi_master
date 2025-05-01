@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("wri",["Function"],[["write_slave_test",,[[,,,,0,"File2:tb_cocotb_up.py:write_slave_test"]]]]);

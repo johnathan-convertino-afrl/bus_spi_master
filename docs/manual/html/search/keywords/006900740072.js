@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("itr",["RegisterBit","Function"],[["ITRDY",,[["up_spi_master",,,,0,"File:up_spi_master.v:up_spi_master.ITRDY","SystemVerilogModule:up_spi_master:ITRDY"]]],["ITRDY_test",,[[,,,,1,"File2:tb_cocotb_up.py:ITRDY_test"]]]]);

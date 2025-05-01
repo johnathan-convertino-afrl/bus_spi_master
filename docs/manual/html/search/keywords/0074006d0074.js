@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("tmt",["RegisterBit"],[["TMT",,[["up_spi_master",,,,0,"File:up_spi_master.v:up_spi_master.TMT","SystemVerilogModule:up_spi_master:TMT"]]]]);

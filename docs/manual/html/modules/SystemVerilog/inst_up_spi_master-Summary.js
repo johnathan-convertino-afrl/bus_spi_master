@@ -1,0 +1,1 @@
+﻿NDFramePage.OnPageTitleLoaded("SystemVerilogModule:inst_up_spi_master","inst_up_spi_master");NDSummary.OnSummaryLoaded("SystemVerilogModule:inst_up_spi_master",[["SystemVerilog","SystemVerilog"]],[["Modules","Module"]],[[105,0,0,"inst_up_spi_master"]]);

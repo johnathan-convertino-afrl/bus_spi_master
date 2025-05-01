@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("cpo",["RegisterBit"],[["CPOL",,[["up_spi_master",,,,0,"File:up_spi_master.v:up_spi_master.CPOL","SystemVerilogModule:up_spi_master:CPOL"]]]]);

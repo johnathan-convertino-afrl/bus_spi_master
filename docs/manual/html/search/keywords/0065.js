@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("e",["RegisterBit"],[["E",,[["up_spi_master",,,,0,"File:up_spi_master.v:up_spi_master.E","SystemVerilogModule:up_spi_master:E"]]]]);

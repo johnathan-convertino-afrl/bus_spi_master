@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("res",["RegisterAddress","Function"],[["RESERVED",,[["up_spi_master",,,,0,"File:up_spi_master.v:up_spi_master.RESERVED","SystemVerilogModule:up_spi_master:RESERVED"]]],["reset_dut",,[[,,,,1,"File2:tb_cocotb_axi_lite.py:reset_dut"]]]]);

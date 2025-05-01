@@ -84,7 +84,7 @@ Source Folder: ../../../src
    Name: source
 
 Source Folder 2: ../../../tb
-   Name: textbench
+   Name: test_bench
 
 
 # This is where you tell Natural Docs which folders it should scan for source

@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("iro",["RegisterBit","Function"],[["IROE",,[["up_spi_master",,,,0,"File:up_spi_master.v:up_spi_master.IROE","SystemVerilogModule:up_spi_master:IROE"]]],["IROE_test",,[[,,,,1,"File2:tb_cocotb_up.py:IROE_test"]]]]);

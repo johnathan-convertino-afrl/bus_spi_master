@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("wis",["Module","File"],[["wishbone_standard_spi_master",,[[,,,,0,"File:wishbone_standard_spi_master.v:wishbone_standard_spi_master","SystemVerilogModule:wishbone_standard_spi_master"],[,"wishbone_standard_spi_master.v",,,1,"File:wishbone_standard_spi_master.v:wishbone_standard_spi_master.v"]]]]);

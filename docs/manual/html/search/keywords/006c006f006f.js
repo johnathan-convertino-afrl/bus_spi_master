@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("loo",["Function"],[["loop_data",,[[,,,,0,"File2:tb_cocotb_axi_lite.py:loop_data"]]],["loop_test",,[[,,,,0,"File2:tb_cocotb_up.py:loop_test"]]]]);

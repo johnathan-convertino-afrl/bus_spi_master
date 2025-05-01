@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("eop",["RegisterBit","RegisterAddress"],[["EOP",,[["up_spi_master",,,,0,"File:up_spi_master.v:up_spi_master.EOP","SystemVerilogModule:up_spi_master:EOP"]]],["EOP_VALUE_REG",,[["up_spi_master",,,,1,"File:up_spi_master.v:up_spi_master.EOP_VALUE_REG","SystemVerilogModule:up_spi_master:EOP_VALUE_REG"]]]]);

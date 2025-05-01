@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("roe",["RegisterBit"],[["ROE",,[["up_spi_master",,,,0,"File:up_spi_master.v:up_spi_master.ROE","SystemVerilogModule:up_spi_master:ROE"]]]]);

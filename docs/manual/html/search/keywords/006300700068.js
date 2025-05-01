@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("cph",["RegisterBit"],[["CPHA",,[["up_spi_master",,,,0,"File:up_spi_master.v:up_spi_master.CPHA","SystemVerilogModule:up_spi_master:CPHA"]]]]);

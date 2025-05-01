@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("trd",["RegisterBit"],[["TRDY",,[["up_spi_master",,,,0,"File:up_spi_master.v:up_spi_master.TRDY","SystemVerilogModule:up_spi_master:TRDY"]]]]);

@@ -105,7 +105,7 @@ module up_spi_master #(
   localparam REG_SIZE = 8;
 
   // Group: Register Information
-  // Core has 4 registers at tr_roehe offsets that follow when at a full 32 bit bus width, Internal address is OFFSET >> BUS_WIDTH/2 (32bit would be h4 >> 2 = 1 for internal address).
+  // Core has 7 registers at the offsets that follow when at a full 32 bit bus width, Internal address is OFFSET >> BUS_WIDTH/2 (32bit would be h4 >> 2 = 1 for internal address).
   //
   //  <RX_DATA_REG>       - h00
   //  <TX_DATA_REG>       - h04
@@ -118,43 +118,43 @@ module up_spi_master #(
 
   // Register Address: RX_DATA_REG
   // Defines the address offset for RX DATA OUTPUT
-  // (see diagrams/reg_RX_FIFO.png)
-  // Valid bits are from BUS_WIDTH*8:0, which are data.
+  // (see diagrams/reg_RX_DATA.png)
+  // Valid bits are from BUS_WIDTH*8-1:0, which are data.
   localparam RX_DATA_REG = 8'h0 >> DIVISOR;
   // Register Address: TX_DATA_REG
   // Defines the address offset to write the TX DATA INPUT.
-  // (see diagrams/reg_TX_FIFO.png)
-  // Valid bits are from BUS_WIDTH*8:0, which are data.
+  // (see diagrams/reg_TX_DATA.png)
+  // Valid bits are from BUS_WIDTH*8-1:0, which are data.
   localparam TX_DATA_REG = 8'h4 >> DIVISOR;
   // Register Address: STATUS_REG
   // Defines the address offset to read the status bits.
   // (see diagrams/reg_STATUS.png)
   localparam STATUS_REG  = 8'h8 >> DIVISOR;
-  /* Register Bits: Status Register Bits, 1 is considered active.
+  /* Register Bits: Status Register, 1 is considered active.
    *
-   * EOP_BIT  - 9, This bit is active(1) when the EOP_VALUE_REG is equal to RX_DATA_REG or TX_DATA_REG.
-   * E_BIT    - 8, Logical or of TOE and ROE (Clear by writing status).
-   * RRDY_BIT - 7, Receive is ready (full) when the bit is 1, empty when the bit is 0.
-   * TRDY_BIT - 6, Transmit is ready (empty) when the bit is 1, full when the bit is 0.
-   * TMT_BIT  - 5, Transmit shift register empty is set to 1 when all bits have been output.
-   * TOE_BIT  - 4, Transmit overrun is set to 1 when a TX_DATA_REG write happens whne TRDY is 1 (Clear by writing status reg).
-   * ROE_BIT  - 3, Receive overrun is set to 1 when RRDY is 1 and a new received word is going to be written to RX_DATA_REG (Clear by writing status reg)
+   * EOP  - 9, This bit is active(1) when the EOP_VALUE_REG is equal to RX_DATA_REG or TX_DATA_REG.
+   * E    - 8, Logical or of TOE and ROE (Clear by writing status).
+   * RRDY - 7, Receive is ready (full) when the bit is 1, empty when the bit is 0.
+   * TRDY - 6, Transmit is ready (empty) when the bit is 1, full when the bit is 0.
+   * TMT  - 5, Transmit shift register empty is set to 1 when all bits have been output.
+   * TOE  - 4, Transmit overrun is set to 1 when a TX_DATA_REG write happens whne TRDY is 1 (Clear by writing status reg).
+   * ROE  - 3, Receive overrun is set to 1 when RRDY is 1 and a new received word is going to be written to RX_DATA_REG (Clear by writing status reg)
    */
   // Register Address: CONTROL_REG
-  // Defines the address offset to set the control bits. Multiply by 4 to get register offset on bus.
+  // Defines the address offset to set the control bits.
   // (see diagrams/reg_CONTROL.png)
-  // See Also: <ENABLE_INTR_BIT>, <RESET_RX_BIT>, <RESET_TX_BIT>
   localparam CONTROL_REG = 8'hC >> DIVISOR;
-  /* Register Bits: Control Register Bits, 1 is considered active. All zeros on reset.
+  /* Register Bits: Control Register, 1 is considered active. All zeros on reset.
    *
-   * SSO_BIT    - 10, Setting this to 1 will force all ss_n lines to 0 (selected).
-   * IEOP_BIT   - 9, Generate a interrupt on EOP status bit going active if set to 1.
-   * IE_BIT     - 8, Enable (1) or disable(0) all interrupts that are active.
-   * IRRDY_BIT  - 7, Generate a interrupt on RRDY status bit going active if set to 1.
-   * ITRDY_BIT  - 6, Generate a interrupt on TRDY status bit going active if set to 1.
-   * ITOE_BIT   - 4, Generate a interrupt on TOE status bit going active if set to 1.
-   * IROE_BIT   - 3, Generate a interrupt on ROE status bit going active if set to 1.
+   * SSO    - 10, Setting this to 1 will force all ss_n lines to 0 (selected).
+   * IEOP   - 9, Generate a interrupt on EOP status bit going active if set to 1.
+   * IE     - 8, Enable (1) or disable(0) all interrupts that are active.
+   * IRRDY  - 7, Generate a interrupt on RRDY status bit going active if set to 1.
+   * ITRDY  - 6, Generate a interrupt on TRDY status bit going active if set to 1.
+   * ITOE   - 4, Generate a interrupt on TOE status bit going active if set to 1.
+   * IROE   - 3, Generate a interrupt on ROE status bit going active if set to 1.
    */
+   //
   localparam SSO_BIT    = 10;
   localparam IEOP_BIT   = 9;
   localparam IE_BIT     = 8;
@@ -162,6 +162,9 @@ module up_spi_master #(
   localparam ITRDY_BIT  = 6;
   localparam ITOE_BIT   = 4;
   localparam IROE_BIT   = 3;
+  // Register Address: RESERVED
+  // Defines the address offset that is not used.
+  localparam RESERVED = 8'h10 >> DIVISOR;
   // Register Address: SLAVE_SELECT_REG
   // Defines the address offset to set the slave select value
   // (see diagrams/reg_SLAVE_SELECT.png)
@@ -169,25 +172,26 @@ module up_spi_master #(
   localparam SLAVE_SELECT_REG = 8'h14 >> DIVISOR;
   // Register Address: EOP_VALUE_REG
   // Defines the address offset to set the end of packet match value
-  // (see diagrams/reg_EOP_VALUE.png)
+  // (see diagrams/reg_EOP.png)
   // Valid bits are from BUS_WIDTH*8:0, which are used to check for a word match between rx and/or tx and update status.
   localparam EOP_VALUE_REG = 8'h18 >> DIVISOR;
   // Register Address: CONTROL_EXT_REG
   // Defines the address offset for control register extensions
   // (see diagrams/reg_CONTROL_EXT.png)
-  // Valid bits are from BUS_WIDTH*8:0, which contain registers added to the base altera ip core.
   localparam CONTROL_EXT_REG = 8'h1C >> DIVISOR;
-  /* Register Bits: Control Extension Register Bits to add capabilities to Altera IP core.
+  /* Register Bits: Control Extension to add capabilities to Altera IP core.
    *
-   * CPHA_BIT     - 5, Clock Phase Bit, 0 or 1 per SPI specs (default value set by IP parameter).
-   * CPOL_BIT     - 4, Clock Polarity bit, 0 or 1 per SPI specs (default value set by IP parameter).
-   * RATE_TOP_BIT - 3, Top bit for rate control. Divider values are 0 to 15 (2^X+1 where X is the divider value).
-   * RATE_BOT_BIT - 0, Bottom bit for rate control.
+   * CPHA     - 5, Clock Phase Bit, 0 or 1 per SPI specs (default value set by IP parameter).
+   * CPOL     - 4, Clock Polarity bit, 0 or 1 per SPI specs (default value set by IP parameter).
+   * RATE_TOP - 3, Top bit for rate control. Divider values are 0 to 15 (2^X+1 where X is the divider value).
+   * RATE_BOT - 0, Bottom bit for rate control.
    */
+   //
   localparam CPHA_BIT      = 5;
   localparam CPOL_BIT      = 4;
   localparam RATE_TOP_BIT  = 3;
   localparam RATE_BOT_BIT  = 0;
+
 
   //slave select can be overridden by the sso bit, which when set to 1 forces all spi selects to be active (0).
   wire [SELECT_WIDTH-1:0]   s_ss_n;
@@ -206,7 +210,7 @@ module up_spi_master #(
   //receive ready is the same as AXIS output (master) valid.
   wire                      rrdy;
 
-  //registers
+  //verilog reg
 
   reg [(BUS_WIDTH*8)-1:0] r_tx_wdata;
   // on tx register write enable data push to core (ignored if not ready).

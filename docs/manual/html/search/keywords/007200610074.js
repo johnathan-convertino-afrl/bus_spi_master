@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("rat",["RegisterBit"],[["RATE_BOT",,[["up_spi_master",,,,0,"File:up_spi_master.v:up_spi_master.RATE_BOT","SystemVerilogModule:up_spi_master:RATE_BOT"]]],["RATE_TOP",,[["up_spi_master",,,,0,"File:up_spi_master.v:up_spi_master.RATE_TOP","SystemVerilogModule:up_spi_master:RATE_TOP"]]]]);

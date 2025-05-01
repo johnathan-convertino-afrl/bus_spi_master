@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("sso",["RegisterBit","Function"],[["SSO",,[["up_spi_master",,,,0,"File:up_spi_master.v:up_spi_master.SSO","SystemVerilogModule:up_spi_master:SSO"]]],["SSO_assert_test",,[[,,,,1,"File2:tb_cocotb_up.py:SSO_assert_test"]]]]);

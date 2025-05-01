@@ -1,9 +1,9 @@
-Generated on 4/30/2025 7:18:51 PM
+Generated on 5/1/2025 8:27:39 AM
 
 Crash Message:
 
    Count must be positive and count must refer to a location within the string/array/collection.
-Parameter name: count (Parser Thread 3)
+Parameter name: count (Parser Thread 4)
    (System.ArgumentOutOfRangeException)
 
 Task:
@@ -12,7 +12,7 @@ Task:
 
 Stack Trace:
 
-   ----- Parser Thread 3 -----
+   ----- Parser Thread 4 -----
   at System.String.LastIndexOf (System.String value, System.Int32 startIndex, System.Int32 count, System.StringComparison comparisonType) [0x0008e] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
   at System.String.LastIndexOf (System.String value, System.Int32 startIndex, System.Int32 count) [0x00017] in <12b418a7818c4ca0893feeaaf67f1e7f>:0 
   at CodeClear.NaturalDocs.Engine.Languages.Parser.BasicPrototypeMatchesTitle (CodeClear.NaturalDocs.Engine.Topics.Topic topic, CodeClear.NaturalDocs.Engine.Tokenization.TokenIterator prototypeStart, CodeClear.NaturalDocs.Engine.Tokenization.TokenIterator prototypeEnd) [0x0006d] in <6c4aae649fee44548beb007d054c6a0e>:0 
@@ -37,6 +37,6 @@ Command Line:
 Versions:
 
    Natural Docs 2.3
-   Unix 6.8.0.57
+   Unix 6.8.0.58
    Mono 6.8.0.105
    SQLite 3.41.2
