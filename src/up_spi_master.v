@@ -44,7 +44,8 @@
  * Parameters:
  *
  *   ADDRESS_WIDTH    - Width of the uP address port, max 32 bit.
- *   BUS_WIDTH        - Width of the uP bus data port(can not be less than 2 bytes, max tested is 4).
+ *   BUS_WIDTH        - Width of the uP bus data port, only valid values are 2 or 4.
+ *   WORD_WIDTH       - Width of each SPI Master word. This will also set the bits used in the TX/RX data registers. Must be less than or equal to BUS_WIDTH, VALID: 1 to 4.
  *   CLOCK_SPEED      - This is the aclk frequency in Hz, this is the the frequency used for the bus and is divided by the rate.
  *   SELECT_WIDTH     - Bit width of the slave select, defaults to 16 to match altera spi ip.
  *   DEFAULT_RATE_DIV - Default divider value of the main clock to use for the spi data output clock rate. 0 is 2 (2^(X+1) X is the DEFAULT_RATE_DIV)
@@ -72,6 +73,7 @@
 module up_spi_master #(
     parameter ADDRESS_WIDTH     = 32,
     parameter BUS_WIDTH         = 4,
+    parameter WORD_WIDTH        = 4,
     parameter CLOCK_SPEED       = 100000000,
     parameter SELECT_WIDTH      = 16,
     parameter DEFAULT_RATE_DIV  = 0,
@@ -119,12 +121,12 @@ module up_spi_master #(
   // Register Address: RX_DATA_REG
   // Defines the address offset for RX DATA OUTPUT
   // (see diagrams/reg_RX_DATA.png)
-  // Valid bits are from BUS_WIDTH*8-1:0, which are data.
+  // Valid bits are from WORD_WIDTH*8-1:0, which are data.
   localparam RX_DATA_REG = 8'h0 >> DIVISOR;
   // Register Address: TX_DATA_REG
   // Defines the address offset to write the TX DATA INPUT.
   // (see diagrams/reg_TX_DATA.png)
-  // Valid bits are from BUS_WIDTH*8-1:0, which are data.
+  // Valid bits are from WORD_WIDTH*8-1:0, which are data.
   localparam TX_DATA_REG = 8'h4 >> DIVISOR;
   // Register Address: STATUS_REG
   // Defines the address offset to read the status bits.
@@ -192,7 +194,6 @@ module up_spi_master #(
   localparam RATE_TOP_BIT  = 3;
   localparam RATE_BOT_BIT  = 0;
 
-
   //slave select can be overridden by the sso bit, which when set to 1 forces all spi selects to be active (0).
   wire [SELECT_WIDTH-1:0]   s_ss_n;
   //read the current count of bits shifted into the core input.
@@ -204,7 +205,7 @@ module up_spi_master #(
   //error is r_toe or r_roe
   wire                      error;
   //read data from SPI core.
-  wire [(BUS_WIDTH*8)-1:0]  rx_rdata;
+  wire [(WORD_WIDTH*8)-1:0]  rx_rdata;
   //transmit ready is the same as AXIS input (slave) tready.
   wire                      trdy;
   //receive ready is the same as AXIS output (master) valid.
@@ -212,7 +213,7 @@ module up_spi_master #(
 
   //verilog reg
 
-  reg [(BUS_WIDTH*8)-1:0] r_tx_wdata;
+  reg [(WORD_WIDTH*8)-1:0] r_tx_wdata;
   // on tx register write enable data push to core (ignored if not ready).
   reg                     r_tx_wen;
   // on rx register read enable data pop from core (invalid values if not ready).
@@ -306,14 +307,14 @@ module up_spi_master #(
       r_spi_rate <= CLOCK_SPEED >> (r_control_ext_reg[RATE_TOP_BIT:RATE_BOT_BIT]+1);
 
       //if the transmit or receive words match the end of packet, set eop bit to 1.
-      if(r_eop_reg == r_tx_wdata || r_eop_reg == rx_rdata)
+      if(r_eop_reg[WORD_WIDTH*8-1:0] == r_tx_wdata || r_eop_reg[WORD_WIDTH*8-1:0] == rx_rdata)
       begin
         r_eop <= 1'b1;
       end
 
       //we have a overrun when the core has all its input data and we are ready
       //we are only ready because the previous word was never read.
-      if(miso_dcount == BUS_WIDTH*8 && rrdy)
+      if(miso_dcount == WORD_WIDTH*8 && rrdy)
       begin
         r_roe <= 1'b1;
       end
@@ -323,7 +324,7 @@ module up_spi_master #(
       begin
         case(up_raddr[REG_SIZE-1:0])
           RX_DATA_REG: begin
-            r_up_rdata <= rx_rdata;
+            r_up_rdata <= {{((BUS_WIDTH-WORD_WIDTH)*8){1'b0}}, rx_rdata};
             r_rx_ren   <= 1'b1;
           end
           STATUS_REG: begin
@@ -354,7 +355,7 @@ module up_spi_master #(
       begin
         case(up_waddr[REG_SIZE-1:0])
           TX_DATA_REG: begin
-            r_tx_wdata  <= up_wdata;
+            r_tx_wdata  <= up_wdata[(WORD_WIDTH*8)-1:0];
             r_tx_wen    <= 1'b1;
             r_toe       <= ~trdy;
           end
@@ -413,7 +414,7 @@ module up_spi_master #(
    */
   axis_spi_master #(
     .CLOCK_SPEED(CLOCK_SPEED),
-    .BUS_WIDTH(BUS_WIDTH),
+    .BUS_WIDTH(WORD_WIDTH),
     .SELECT_WIDTH(SELECT_WIDTH)
   ) inst_axis_spi_master (
     .aclk(clk),

@@ -94,7 +94,7 @@ async def write_slave_test(dut):
     spi_bus = SpiBus.from_entity(dut, cs_name="ss_n")
 
     spi_config = SpiConfig(
-        word_width=int(dut.BUS_WIDTH.value*8),
+        word_width=int(dut.WORD_WIDTH.value*8),
         sclk_freq=int(dut.CLOCK_SPEED.value >> 2**(dut.DEFAULT_RATE_DIV.value+1)),
         cpol=dut.DEFAULT_CPOL.value != 0,
         cpha=dut.DEFAULT_CPHA.value != 0,
@@ -140,7 +140,7 @@ async def loop_test(dut):
     spi_bus = SpiBus.from_entity(dut, cs_name="ss_n")
 
     spi_config = SpiConfig(
-        word_width=int(dut.BUS_WIDTH.value*8),
+        word_width=int(dut.WORD_WIDTH.value*8),
         sclk_freq=int(dut.CLOCK_SPEED.value >> 2**(dut.DEFAULT_RATE_DIV.value+1)),
         cpol=dut.DEFAULT_CPOL.value != 0,
         cpha=dut.DEFAULT_CPHA.value != 0,
@@ -326,7 +326,7 @@ async def IROE_test(dut):
     spi_bus = SpiBus.from_entity(dut, cs_name="ss_n")
 
     spi_config = SpiConfig(
-        word_width=int(dut.BUS_WIDTH.value*8),
+        word_width=int(dut.WORD_WIDTH.value*8),
         sclk_freq=int(dut.CLOCK_SPEED.value >> 2**(dut.DEFAULT_RATE_DIV.value+1)),
         cpol=dut.DEFAULT_CPOL.value != 0,
         cpha=dut.DEFAULT_CPHA.value != 0,
@@ -348,6 +348,7 @@ async def IROE_test(dut):
     for x in range(0, 256):
       await up_master.write(TX_DATA_REG >> DIVISOR, x)
 
+      #wait for transmit to be over
       while(not (await up_master.read(STATUS_REG >> DIVISOR) & (1 << 6))):
         await RisingEdge(dut.clk)
 
@@ -423,7 +424,7 @@ async def end_of_packet_test(dut):
     spi_bus = SpiBus.from_entity(dut, cs_name="ss_n")
 
     spi_config = SpiConfig(
-        word_width=int(dut.BUS_WIDTH.value*8),
+        word_width=int(dut.WORD_WIDTH.value*8),
         sclk_freq=int(dut.CLOCK_SPEED.value >> 2**(dut.DEFAULT_RATE_DIV.value+1)),
         cpol=dut.DEFAULT_CPOL.value != 0,
         cpha=dut.DEFAULT_CPHA.value != 0,

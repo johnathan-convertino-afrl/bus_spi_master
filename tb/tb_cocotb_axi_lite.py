@@ -95,7 +95,7 @@ async def loop_data(dut):
     spi_bus = SpiBus.from_entity(dut, cs_name="ss_n")
 
     spi_config = SpiConfig(
-        word_width=int(dut.BUS_WIDTH.value*8),
+        word_width=int(dut.WORD_WIDTH.value*8),
         sclk_freq=int(dut.CLOCK_SPEED.value >> 2**(dut.DEFAULT_RATE_DIV.value+1)),
         cpol=dut.DEFAULT_CPOL.value != 0,
         cpha=dut.DEFAULT_CPHA.value != 0,
@@ -115,7 +115,7 @@ async def loop_data(dut):
     await axil_master.write(CONTROL_REG, int(1 << 8 | 1 << 7).to_bytes(dut.BUS_WIDTH.value, "little"))
 
     for x in range(0, 2**8):
-        payload_bytes = x.to_bytes(dut.BUS_WIDTH.value, "little")
+        payload_bytes = x.to_bytes(dut.WORD_WIDTH.value, "little")
 
         send.append(x)
 

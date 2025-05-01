@@ -49,6 +49,7 @@ targets:
     parameters:
       - ADDRESS_WIDTH
       - BUS_WIDTH
+      - WORD_WIDTH
       - CLOCK_SPEED
       - SELECT_WIDTH
       - DEFAULT_RATE_DIV
@@ -66,6 +67,12 @@ parameters:
     datatype    : int
     default     : 4
     description : number of bytes for data bus
+    paramtype   : vlogparam
+
+  WORD_WIDTH:
+    datatype    : int
+    default     : 4
+    description : number of bytes for SPI data word size in bytes
     paramtype   : vlogparam
 
   CLOCK_SPEED:

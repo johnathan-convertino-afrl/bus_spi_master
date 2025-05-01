@@ -45,6 +45,7 @@
  *
  *   ADDRESS_WIDTH    - Width of the uP address port, max 32 bit.
  *   BUS_WIDTH        - Width of the uP bus data port(can not be less than 2 bytes, max tested is 4).
+ *   WORD_WIDTH       - Width of each SPI Master word. This will also set the bits used in the TX/RX data registers. Must be less than or equal to BUS_WIDTH 1 to 4.
  *   CLOCK_SPEED      - This is the aclk frequency in Hz, this is the the frequency used for the bus and is divided by the rate.
  *   SELECT_WIDTH     - Bit width of the slave select, defaults to 16 to match altera spi ip.
  *   DEFAULT_RATE_DIV - Default divider value of the main clock to use for the spi data output clock rate. 0 is 2 (2^(X+1) X is the DEFAULT_RATE_DIV)
@@ -73,6 +74,7 @@
 module tb_cocotb #(
     parameter ADDRESS_WIDTH     = 32,
     parameter BUS_WIDTH         = 4,
+    parameter WORD_WIDTH        = 4,
     parameter CLOCK_SPEED       = 100000000,
     parameter SELECT_WIDTH      = 16,
     parameter DEFAULT_RATE_DIV  = 0,
@@ -115,6 +117,7 @@ module tb_cocotb #(
   wishbone_standard_spi_master #(
     .ADDRESS_WIDTH(ADDRESS_WIDTH),
     .BUS_WIDTH(BUS_WIDTH),
+    .WORD_WIDTH(WORD_WIDTH),
     .CLOCK_SPEED(CLOCK_SPEED),
     .SELECT_WIDTH(SELECT_WIDTH),
     .DEFAULT_RATE_DIV(DEFAULT_RATE_DIV),
