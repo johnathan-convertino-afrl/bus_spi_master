@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.1.27)  1 MAY 2025 08:32
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.1.27)  1 MAY 2025 20:04
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -177,6 +177,13 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 85.
 )
 \Hy@SectionHShift=\skip50
+) (/usr/share/texlive/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count281
+\float@exts=\toks19
+\float@box=\box53
+\@float@everytoks=\toks20
+\@floatcapt=\box54
 ) (/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
 Package: xcolor 2023/11/15 v3.01 LaTeX color extensions (UK)
 (/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg
@@ -194,59 +201,59 @@ Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1371.
 Package xcolor Info: Model `Gray' substituted by `gray' on input line 1372.
 Package xcolor Info: Model `wave' substituted by `hsb' on input line 1373.
 )
-\sizebox=\box53
+\sizebox=\box55
 \lthtmlwrite=\write3
 (/usr/share/texmf/tex/latex/preview/preview.sty
 Package: preview 2023/01/17 13.2 (AUCTeX/preview-latex)
 (/usr/share/texmf/tex/latex/preview/prtightpage.def
 \PreviewBorder=\dimen151
 )
-\pr@snippet=\count281
-\pr@box=\box54
-\pr@output=\toks19
+\pr@snippet=\count282
+\pr@box=\box56
+\pr@output=\toks21
 )
-\lthtmlPageBox=\box55
+\lthtmlPageBox=\box57
 \lthtmlCropMarkHeight=\dimen152
 \lthtmlCropMarkDepth=\dimen153
 (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2024-01-04 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count282
-\l__pdf_internal_box=\box56
+\l__color_backend_stack_int=\count283
+\l__pdf_internal_box=\box58
 )
 No file bus_spi_master_images.aux.
 \openout1 = `bus_spi_master_images.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 98.
-LaTeX Font Info:    ... okay on input line 98.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count283
+\scratchcounter=\count284
 \scratchdimen=\dimen154
-\scratchbox=\box57
-\nofMPsegments=\count284
-\nofMParguments=\count285
-\everyMPshowfont=\toks20
-\MPscratchCnt=\count286
+\scratchbox=\box59
+\nofMPsegments=\count285
+\nofMParguments=\count286
+\everyMPshowfont=\toks22
+\MPscratchCnt=\count287
 \MPscratchDim=\dimen155
-\MPnumerator=\count287
-\makeMPintoPDFobject=\count288
-\everyMPtoPDFconversion=\toks21
+\MPnumerator=\count288
+\makeMPintoPDFobject=\count289
+\everyMPtoPDFconversion=\toks23
 ) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 (/usr/share/texlive/texmf-dist/tex/latex/grfext/grfext.sty
@@ -262,8 +269,8 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-\c@lstlisting=\count289
-Package hyperref Info: Link coloring OFF on input line 98.
+\c@lstlisting=\count290
+Package hyperref Info: Link coloring OFF on input line 99.
 \@outlinefile=\write4
 \openout4 = `bus_spi_master_images.out'.
 
@@ -295,24 +302,145 @@ latex2htmlLength evensidemargin=62.0pt
 <img/AFRL.png, id=4, 602.7318pt x 131.0496pt>
 File: img/AFRL.png Graphic file (type png)
 <use img/AFRL.png>
-Package pdftex.def Info: img/AFRL.png  used on input line 122.
+Package pdftex.def Info: img/AFRL.png  used on input line 123.
 (pdftex.def)             Requested size: 310.49771pt x 67.51028pt.
 
-:tex2html_wrap300:lthtmlCropMarkHeight:=73.51028pt
+:tex2html_wrap376:lthtmlCropMarkHeight:=73.51028pt
 
-:tex2html_wrap300:lthtmlCropMarkDepth:=0.0pt:1ex:=4.30554pt
+:tex2html_wrap376:lthtmlCropMarkDepth:=0.0pt:1ex:=4.30554pt
 Preview: Tightpage -32890 -32890 32890 32890
 [1 </home/convertinoj/Programming/HDL/fusesoc/ip_pub/device/bus_spi_master/docs
 /manual/img/AFRL.png>]
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 145.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 145.
+<img/diagrams/waveform_write_slave_up.png, id=11, 2269.72969pt x 491.58656pt>
+File: img/diagrams/waveform_write_slave_up.png Graphic file (type png)
+<use img/diagrams/waveform_write_slave_up.png>
+Package pdftex.def Info: img/diagrams/waveform_write_slave_up.png  used on inpu
+t line 138.
+(pdftex.def)             Requested size: 345.0pt x 74.71742pt.
 
-:tex2html_wrap_inline162:lthtmlCropMarkHeight:=6.0pt
+Overfull \hbox (15.0pt too wide) in paragraph at lines 138--139
+[][] 
+ []
 
-:tex2html_wrap_inline162:lthtmlCropMarkDepth:=0.0pt:1ex:=4.30554pt
-[2] (./bus_spi_master_images.aux)
+
+:tex2html_wrap390:lthtmlCropMarkHeight:=80.71742pt
+
+:tex2html_wrap390:lthtmlCropMarkDepth:=0.0pt:1ex:=4.30554pt
+[2 </home/convertinoj/Programming/HDL/fusesoc/ip_pub/device/bus_spi_master/docs
+/manual/img/diagrams/waveform_write_slave_up.png>]
+<img/diagrams/waveform_loop_test_up.png, id=17, 2025.06563pt x 508.14844pt>
+File: img/diagrams/waveform_loop_test_up.png Graphic file (type png)
+<use img/diagrams/waveform_loop_test_up.png>
+Package pdftex.def Info: img/diagrams/waveform_loop_test_up.png  used on input 
+line 144.
+(pdftex.def)             Requested size: 345.0pt x 86.57018pt.
+
+Overfull \hbox (15.0pt too wide) in paragraph at lines 144--145
+[][] 
+ []
+
+
+:tex2html_wrap394:lthtmlCropMarkHeight:=92.57018pt
+
+:tex2html_wrap394:lthtmlCropMarkDepth:=0.0pt:1ex:=4.30554pt
+[3 </home/convertinoj/Programming/HDL/fusesoc/ip_pub/device/bus_spi_master/docs
+/manual/img/diagrams/waveform_loop_test_up.png>]
+<img/diagrams/waveform_irrdy_up.png, id=23, 2025.06563pt x 508.14844pt>
+File: img/diagrams/waveform_irrdy_up.png Graphic file (type png)
+<use img/diagrams/waveform_irrdy_up.png>
+Package pdftex.def Info: img/diagrams/waveform_irrdy_up.png  used on input line
+ 150.
+(pdftex.def)             Requested size: 345.0pt x 86.57018pt.
+
+Overfull \hbox (15.0pt too wide) in paragraph at lines 150--151
+[][] 
+ []
+
+
+:tex2html_wrap398:lthtmlCropMarkHeight:=92.57018pt
+
+:tex2html_wrap398:lthtmlCropMarkDepth:=0.0pt:1ex:=4.30554pt
+[4 </home/convertinoj/Programming/HDL/fusesoc/ip_pub/device/bus_spi_master/docs
+/manual/img/diagrams/waveform_irrdy_up.png>]
+<img/diagrams/waveform_itoe_up.png, id=29, 2025.06563pt x 508.14844pt>
+File: img/diagrams/waveform_itoe_up.png Graphic file (type png)
+<use img/diagrams/waveform_itoe_up.png>
+Package pdftex.def Info: img/diagrams/waveform_itoe_up.png  used on input line 
+156.
+(pdftex.def)             Requested size: 345.0pt x 86.57018pt.
+
+Overfull \hbox (15.0pt too wide) in paragraph at lines 156--157
+[][] 
+ []
+
+
+:tex2html_wrap402:lthtmlCropMarkHeight:=92.57018pt
+
+:tex2html_wrap402:lthtmlCropMarkDepth:=0.0pt:1ex:=4.30554pt
+[5 </home/convertinoj/Programming/HDL/fusesoc/ip_pub/device/bus_spi_master/docs
+/manual/img/diagrams/waveform_itoe_up.png>]
+<img/diagrams/waveform_eop_up.png, id=35, 2025.06563pt x 508.14844pt>
+File: img/diagrams/waveform_eop_up.png Graphic file (type png)
+<use img/diagrams/waveform_eop_up.png>
+Package pdftex.def Info: img/diagrams/waveform_eop_up.png  used on input line 1
+62.
+(pdftex.def)             Requested size: 345.0pt x 86.57018pt.
+
+Overfull \hbox (15.0pt too wide) in paragraph at lines 162--163
+[][] 
+ []
+
+
+:tex2html_wrap406:lthtmlCropMarkHeight:=92.57018pt
+
+:tex2html_wrap406:lthtmlCropMarkDepth:=0.0pt:1ex:=4.30554pt
+[6 </home/convertinoj/Programming/HDL/fusesoc/ip_pub/device/bus_spi_master/docs
+/manual/img/diagrams/waveform_eop_up.png>]
+<img/diagrams/waveform_loop_test_axil.png, id=41, 2231.33624pt x 777.65532pt>
+File: img/diagrams/waveform_loop_test_axil.png Graphic file (type png)
+<use img/diagrams/waveform_loop_test_axil.png>
+Package pdftex.def Info: img/diagrams/waveform_loop_test_axil.png  used on inpu
+t line 168.
+(pdftex.def)             Requested size: 345.0pt x 120.23868pt.
+
+Overfull \hbox (15.0pt too wide) in paragraph at lines 168--169
+[][] 
+ []
+
+
+:tex2html_wrap410:lthtmlCropMarkHeight:=126.23868pt
+
+:tex2html_wrap410:lthtmlCropMarkDepth:=0.0pt:1ex:=4.30554pt
+[7 </home/convertinoj/Programming/HDL/fusesoc/ip_pub/device/bus_spi_master/docs
+/manual/img/diagrams/waveform_loop_test_axil.png>]
+<img/diagrams/waveform_loop_test_wishbone_standard.png, id=48, 2231.33624pt x 4
+84.05844pt>
+File: img/diagrams/waveform_loop_test_wishbone_standard.png Graphic file (type 
+png)
+<use img/diagrams/waveform_loop_test_wishbone_standard.png>
+Package pdftex.def Info: img/diagrams/waveform_loop_test_wishbone_standard.png 
+ used on input line 174.
+(pdftex.def)             Requested size: 345.0pt x 74.84363pt.
+
+Overfull \hbox (15.0pt too wide) in paragraph at lines 174--175
+[][] 
+ []
+
+
+:tex2html_wrap414:lthtmlCropMarkHeight:=80.84363pt
+
+:tex2html_wrap414:lthtmlCropMarkDepth:=0.0pt:1ex:=4.30554pt
+[8 </home/convertinoj/Programming/HDL/fusesoc/ip_pub/device/bus_spi_master/docs
+/manual/img/diagrams/waveform_loop_test_wishbone_standard.png>]
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 189.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 189.
+
+:tex2html_wrap_inline192:lthtmlCropMarkHeight:=6.0pt
+
+:tex2html_wrap_inline192:lthtmlCropMarkDepth:=0.0pt:1ex:=4.30554pt
+[9] (./bus_spi_master_images.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-01-22>
@@ -327,18 +455,18 @@ Package rerunfilecheck Info: Checksums for `bus_spi_master_images.out':
 (rerunfilecheck)             After:  D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 10379 strings out of 476182
- 159174 string characters out of 5795595
+ 10499 strings out of 476182
+ 162424 string characters out of 5795595
  1923975 words of memory out of 5000000
- 32298 multiletter control sequences out of 15000+600000
+ 32407 multiletter control sequences out of 15000+600000
  558069 words of font info for 36 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 75i,5n,79p,249b,436s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,5n,79p,267b,437s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on bus_spi_master_images.pdf (2 pages, 33001 bytes).
+Output written on bus_spi_master_images.pdf (9 pages, 1385952 bytes).
 PDF statistics:
- 19 PDF objects out of 1000 (max. 8388607)
- 12 compressed objects within 1 object stream
- 2 named destinations out of 1000 (max. 500000)
- 6 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 65 PDF objects out of 1000 (max. 8388607)
+ 37 compressed objects within 1 object stream
+ 9 named destinations out of 1000 (max. 500000)
+ 41 words of extra memory for PDF output out of 10000 (max. 10000000)
 

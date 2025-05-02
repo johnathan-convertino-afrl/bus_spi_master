@@ -27,10 +27,11 @@
 \subsection{Introduction}
 
 \par
-BUS UART is a core for interfacing over RS232 UART to a bus of choice. The core will process data to and from the UART.
-The data can then be accessed over a BUS, currently AXI lite or Wishbone Standard, and processed as needed. All input and output
-over the bus goes into FIFOs that is then tied to the AXIS UART core. The following is information on how to use the device
-in an FPGA, software, and in simulation.
+BUS SPI Master is a core that emulates and extends the Altera SPI IP core. This is a SPI master device only. It is
+currently available as a AXI Lite, Wishbone Standard, and uP bus IP core. The Altera core this is based on has Linux
+and uboot drivers, so by mimicking it this core has instant access to drivers. There is a extension register for control
+that allows for changes to the SPI Master the Altera IP does not have. The following is information on how to use the
+device in an FPGA, software, and in simulation.
 
 \subsection{Dependencies}
 
@@ -51,28 +52,96 @@ The following are the dependencies of the cores.
 
 \subsection{In a Project}
 \par
-First, pick a core that matches the target bus in question. Then connect the BUS UART core to that bus. Once this is complete the UART pins will need
-to be routed so they match the UART device or other.
+First, pick a core that matches the target bus in question. Then connect the BUS SPI MASTER core to that bus. Once this is complete the SPI pins will need
+to be routed to the slave SPI devices
 
 \section{Architecture}
 \par
 This core is made up of other cores that are documented in detail in there source. The cores this is made up of are the,
 \begin{itemize}
-  \item \textbf{axis\_uart} Interface with UART and present the data over AXIS interface (see core for documentation).
-  \item \textbf{fifo} Used for RX and TX FIFO instances. Set to 16 words buffer max (see core for documentation).
+  \item \textbf{axis\_spi\_master} Interface with SPI master and present the data over AXIS interface (see core for documentation).
   \item \textbf{up\_axi} An AXI Lite to uP converter core (see core for documentation).
   \item \textbf{up\_wishbone\_standard} A wishbone standard to uP converter core (see core for documentation).
-  \item \textbf{up\_uart} Takes uP bus and coverts it to interface with the RX/TX FIFOs and the AXIS UART (see module documentation for information \ref{Module Documentation}).
+  \item \textbf{up\_spi\_master} Takes uP bus and coverts it to interface to the AXIS SPI (see module documentation for information \ref{Module Documentation}).
 \end{itemize}
 
-For register documentation please see up\_uart in \ref{Module Documentation}
+For register documentation please see up\_spi\_master in \ref{Module Documentation}
 
+\par
+Interrupts for this core are enabled in the control register. First the general IE bit, interrupt enable, is set to 1. Then bits
+are choosen that set what conditions the interrupt should be activated for. This interrupt goes active high (1) when a condition becomes
+true. Starting with the interrupt end of packet bit (IEOP), setting this active will enable the interrupt to go off when the status EOP bit
+is true. This will stay that way till the tx or rx register is cleared of the EOP word. Interrupt read ready (IRRDY) when set active will trigger
+an interrupt when the status bit RRDY is active. This will stay tripped till a word is read. Interrupt transmit ready (ITRDY) when set active will
+trigger an interrupt when the status bit TRDY is active. This will stay tripped till a word is written. Interrupt transmit overrun (ITOE) when set
+active will trigger an interrupt when the status bit TOE is active. This will stay tripped till the status register is written. Interrupt receive
+underrun when set active will trigger an interrupt when the status bit ROE is active. ITOE, TOE, IROE, ROE, and E are only cleared by writing to the
+status register. The status register does NOT write any actual data to the status register, so the status bits are not directly affected. It simply
+resets ROE/TOE to 0. See \ref{Module Documentation} up\_spi\_master for more detail the location and function of register bits.
 
+\subsection{Waveforms}
+The idealized simulation waveforms are shown below. The values reflect the results of using the icarus backend with surfer view tools.
+
+\par
+Write slave is the first uP test that looks at writing to a slave device using the SPI master without reading the received data.
+\begin{figure}[H]
+\caption{write slave uP}
+\centering
+\includegraphics[width=\textwidth]{img/diagrams/waveform_write_slave_up.png}
+\end{figure}
+
+\par
+Loop test checks for reads and writes on the uP bus.
+\begin{figure}[H]
+\caption{loop test uP}
+\centering
+\includegraphics[width=\textwidth]{img/diagrams/waveform_loop_test_up.png}
+\end{figure}
+
+\par
+Next are various interrupt enable tests to see if they respond as they should.
+\begin{figure}[H]
+\caption{read ready interrupt enabled}
+\centering
+\includegraphics[width=\textwidth]{img/diagrams/waveform_irrdy_up.png}
+\end{figure}
+
+\begin{figure}[H]
+\caption{transmit error interrupt enabled}
+\centering
+\includegraphics[width=\textwidth]{img/diagrams/waveform_itoe_up.png}
+\end{figure}
+
+\par
+End of packet is a feature added to the Altera IP core in 2019. It is not present in the linux drivers.
+Its functionality is questionable when it comes to being useful. Essentially it allows the device to signal
+bits or a irq if a EOP word matches the transmit or receive register contents. It is cleared when those
+contents change and are not the EOP.
+\begin{figure}[H]
+\caption{EOP}
+\centering
+\includegraphics[width=\textwidth]{img/diagrams/waveform_eop_up.png}
+\end{figure}
+
+\par
+The last two waveforms show the uP to bus adapters in a loopback test. Since it takes two writes to get the SPI slave to
+echo a value written two write previous, the read value will be two writes behind.
+\begin{figure}[H]
+\caption{loop test AXI Lite}
+\centering
+\includegraphics[width=\textwidth]{img/diagrams/waveform_loop_test_axil.png}
+\end{figure}
+
+\begin{figure}[H]
+\caption{loop test wishbone standard}
+\centering
+\includegraphics[width=\textwidth]{img/diagrams/waveform_loop_test_wishbone_standard.png}
+\end{figure}
 
 \section{Building}
 
 \par
-The BUS UART is written in Verilog 2001. It should synthesize in any modern FPGA software. The core comes as a fusesoc packaged core and can be
+The BUS SPI MASTER is written in Verilog 2001. It should synthesize in any modern FPGA software. The core comes as a fusesoc packaged core and can be
 included in any other core. Be sure to make sure you have meet the dependencies listed in the previous section.
 
 \subsection{fusesoc}
@@ -122,25 +191,26 @@ There are a few different simulations that can be run for this core.
 
 \subsection{cocotb}
 \par
-Cocotb is the only method for simulating the various interations of the bus\_UART core. At the moment there is a
-axi\_lite, wishbone\_standard, and uP based versions. This is currently set to use icarus as the sim tool for cocotb.
+Cocotb is the only method for simulating the various interations of the bus\_spi\_master core. At the moment there is a
+axi\_lite, wishbone\_standard, and uP based versions. This is currently set to use icarus as the sim tool for cocotb. The uP
+testbench is the one that will test all the various register bits and interrupt options. Others will only do loop back tests.
 
 \par
 To run the wishbone sim use the command below.
 \begin{lstlisting}[language=bash]
-fusesoc run --target sim_cocotb AFRL:device:wishbone_standard_uart:1.0.0
+fusesoc run --target sim_cocotb AFRL:device:wishbone_standard_spi_master:1.0.0
 \end{lstlisting}
 
 \par
 To run the axi\_lite sim use the command below.
 \begin{lstlisting}[language=bash]
-fusesoc run --target sim_cocotb AFRL:device:axi_lite_uart:1.0.0
+fusesoc run --target sim_cocotb AFRL:device:axi_lite_spi_master:1.0.0
 \end{lstlisting}
 
 \par
 To run the uP sim use the command below.
 \begin{lstlisting}[language=bash]
-fusesoc run --target sim_cocotb AFRL:device:up_uart:1.0.0
+fusesoc run --target sim_cocotb AFRL:device:up_spi_master:1.0.0
 \end{lstlisting}
 
 
@@ -149,21 +219,21 @@ fusesoc run --target sim_cocotb AFRL:device:up_uart:1.0.0
 \section{Module Documentation} \label{Module Documentation}
 
 \par
-up\_uart is the module that integrates the AXIS UART core.
-This includes FIFO's that have there inputs/outputs for data tied to registers mapped in the uP bus.
+up\_spi\_master is the module that integrates the AXIS SPI MASTER core.
+This uses inputs/outputs for data tied directly to registers mapped in the uP bus.
 The uP bus is the microprocessor bus based on Analog Devices design. It resembles a APB bus in design,
-and is the bridge to other buses BUS UART can use. This makes changing for AXI Lite, to Wishbone to whatever
+and is the bridge to other buses BUS SPI MASTER can use. This makes changing for AXI Lite, to Wishbone to whatever
 quick and painless.
 
 \par
-axi\_lite\_uart module adds a AXI Lite to uP (microprocessor) bus converter. The converter is
+axi\_lite\_spi module adds a AXI Lite to uP (microprocessor) bus converter. The converter is
 from Analog Devices.
 
 \par
-wishbone\_standard\_uart module adds a Wishbone Standard to uP (microprocessor) bus converter. This
-converter was designed for Wishbone Standard only, NOT pipelined.
+wishbone\_standard\_spi module adds a Wishbone Standard to uP (microprocessor) bus converter. This
+converter was designed for Wishbone Standard only, NOT pipelined or Registered (cti).
 
 \vspace{15mm}
 \par
-The next sections document these modules in great detail. up\_uart contains the register map explained, and what the various bits do.
+The next sections document these modules. up\_spi\_master contains the register map explained, and what the various bits do.
 

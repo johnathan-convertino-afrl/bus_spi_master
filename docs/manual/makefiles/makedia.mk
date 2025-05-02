@@ -31,6 +31,6 @@ all: $(DIAGRAM_IMG)
 	pdflatex -jobname=$(basename $@) -shell-escape -interaction=batchmode '\documentclass{article}\usepackage{DejaVuSans}\renewcommand{\familydefault}{\sfdefault}\usepackage[T1]{fontenc}\usepackage{multirow}\usepackage{lscape}\usepackage{graphics}\begin{document}\pagenumbering{gobble}\input{$^}\end{document}'
 
 clean:
-	rm -rf $(DIAGRAM_OUT_DIR)/*.$(IMG_TYPE)
+	rm -rf $(DIAGRAM_OUT_DIR)/reg_*.$(IMG_TYPE)
 
 

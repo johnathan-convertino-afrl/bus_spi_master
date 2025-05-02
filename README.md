@@ -21,7 +21,11 @@
 
 #### Previous
   - none
+#### CORES
 
+  * AFRL:device:axi_lite_spi_master
+  * AFRL:device:up_spi_master
+  * AFRL:device:wishbone_classic_spi_master
 ### DOCUMENTATION
   For detailed usage information, please navigate to one of the following sources. They are the same, just in a different format.
 
@@ -40,10 +44,17 @@
 
   - AFRL:simulation:axis_stimulator
 
+### CORES
+
+  * AFRL:device:axi_lite_spi_master
+  * AFRL:device:up_spi_master
+  * AFRL:device:wishbone_classic_spi_master
+
 ### PARAMETERS
 
   *   ADDRESS_WIDTH    - Width of the uP address port, max 32 bit.
-  *   BUS_WIDTH        - Width of the uP bus data port(can not be less than 2 bytes, max tested is 4).
+  *   BUS_WIDTH        - Width of the uP bus data port, only valid values are 2 or 4.
+  *   WORD_WIDTH       - Width of each SPI Master word. This will also set the bits used in the TX/RX data registers. Must be less than or equal to BUS_WIDTH. VALID VALUES: 1 to 4.
   *   CLOCK_SPEED      - This is the aclk frequency in Hz, this is the the frequency used for the bus and is divided by the rate.
   *   SELECT_WIDTH     - Bit width of the slave select, defaults to 16 to match altera spi ip.
   *   DEFAULT_RATE_DIV - Default divider value of the main clock to use for the spi data output clock rate. 0 is 2 (2^(X+1) X is the DEFAULT_RATE_DIV)
@@ -51,6 +62,8 @@
   *   DEFAULT_CPHA     - Default clock phase for the core (0 or 1).
 
 ### REGISTERS
+
+This is a list of registers, the manual has details on there usage.
 
   * 0x00 = RX_DATA_REG
   * 0x04 = TX_DATA_REG

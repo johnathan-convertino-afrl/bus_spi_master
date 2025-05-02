@@ -11,7 +11,7 @@
 
 <LINK REL="STYLESHEET" HREF="html.css">
 
-<LINK REL="next" HREF="bus_spi_master_node10.html">
+<LINK REL="next" HREF="bus_spi_master_node11.html">
 <LINK REL="previous" HREF="bus_spi_master_node2.html">
 <LINK REL="next" HREF="bus_spi_master_node10.html">
 </HEAD>
@@ -28,17 +28,17 @@
 <A
  HREF="bus_spi_master_node8.html">
 <IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A> 
-<A ID="tex2html81"
+<A ID="tex2html90"
   HREF="bus_spi_master_node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALT="contents" SRC="contents.png"></A>  
 <BR>
 <B> Next:</B> <A
- HREF="bus_spi_master_node10.html">Building</A>
+ HREF="bus_spi_master_node10.html">Waveforms</A>
 <B> Up:</B> <A
  HREF="html.html">html</A>
 <B> Previous:</B> <A
  HREF="bus_spi_master_node8.html">In a Project</A>
- &nbsp; <B>  <A ID="tex2html82"
+ &nbsp; <B>  <A ID="tex2html91"
   HREF="bus_spi_master_node1.html">Contents</A></B> 
 <BR>
 <BR></DIV>
@@ -52,23 +52,66 @@ Architecture</A>
 This core is made up of other cores that are documented in detail in there source. The cores this is made up of are the,
 
 <UL>
-<LI><SPAN  CLASS="textbf">axis_uart</SPAN> Interface with UART and present the data over AXIS interface (see core for documentation).
-</LI>
-<LI><SPAN  CLASS="textbf">fifo</SPAN> Used for RX and TX FIFO instances. Set to 16 words buffer max (see core for documentation).
+<LI><SPAN  CLASS="textbf">axis_spi_master</SPAN> Interface with SPI master and present the data over AXIS interface (see core for documentation).
 </LI>
 <LI><SPAN  CLASS="textbf">up_axi</SPAN> An AXI Lite to uP converter core (see core for documentation).
 </LI>
 <LI><SPAN  CLASS="textbf">up_wishbone_standard</SPAN> A wishbone standard to uP converter core (see core for documentation).
 </LI>
-<LI><SPAN  CLASS="textbf">up_uart</SPAN> Takes uP bus and coverts it to interface with the RX/TX FIFOs and the AXIS UART (see module documentation for information <A HREF="bus_spi_master_node23.html#Module_Documentation"><IMG  ALT="[*]" SRC="crossref.png"></A>).
+<LI><SPAN  CLASS="textbf">up_spi_master</SPAN> Takes uP bus and coverts it to interface to the AXIS SPI (see module documentation for information <A HREF="bus_spi_master_node24.html#Module_Documentation"><IMG  ALT="[*]" SRC="crossref.png"></A>).
 </LI>
 </UL>
 
 <P>
-For register documentation please see up_uart in <A HREF="bus_spi_master_node23.html#Module_Documentation"><IMG  ALT="[*]" SRC="crossref.png"></A>
+For register documentation please see up_spi_master in <A HREF="bus_spi_master_node24.html#Module_Documentation"><IMG  ALT="[*]" SRC="crossref.png"></A>
+
+<P>
+Interrupts for this core are enabled in the control register. First the general IE bit, interrupt enable, is set to 1. Then bits
+are choosen that set what conditions the interrupt should be activated for. This interrupt goes active high (1) when a condition becomes
+true. Starting with the interrupt end of packet bit (IEOP), setting this active will enable the interrupt to go off when the status EOP bit
+is true. This will stay that way till the tx or rx register is cleared of the EOP word. Interrupt read ready (IRRDY) when set active will trigger
+an interrupt when the status bit RRDY is active. This will stay tripped till a word is read. Interrupt transmit ready (ITRDY) when set active will
+trigger an interrupt when the status bit TRDY is active. This will stay tripped till a word is written. Interrupt transmit overrun (ITOE) when set
+active will trigger an interrupt when the status bit TOE is active. This will stay tripped till the status register is written. Interrupt receive
+underrun when set active will trigger an interrupt when the status bit ROE is active. ITOE, TOE, IROE, ROE, and E are only cleared by writing to the
+status register. The status register does NOT write any actual data to the status register, so the status bits are not directly affected. It simply
+resets ROE/TOE to 0. See <A HREF="bus_spi_master_node24.html#Module_Documentation"><IMG  ALT="[*]" SRC="crossref.png"></A> up_spi_master for more detail the location and function of register bits.
 
 <P>
 <BR><HR>
+<!--Table of Child-Links-->
+<A ID="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A ID="tex2html92"
+  HREF="bus_spi_master_node10.html">Waveforms</A>
+</UL>
+<!--End of Table of Child-Links-->
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A
+ HREF="bus_spi_master_node10.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="html.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="bus_spi_master_node8.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A> 
+<A ID="tex2html90"
+  HREF="bus_spi_master_node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALT="contents" SRC="contents.png"></A>  
+<BR>
+<B> Next:</B> <A
+ HREF="bus_spi_master_node10.html">Waveforms</A>
+<B> Up:</B> <A
+ HREF="html.html">html</A>
+<B> Previous:</B> <A
+ HREF="bus_spi_master_node8.html">In a Project</A>
+ &nbsp; <B>  <A ID="tex2html91"
+  HREF="bus_spi_master_node1.html">Contents</A></B> </DIV>
+<!--End of Navigation Panel-->
 
 </BODY>
 </HTML>
