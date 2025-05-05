@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.1.27)  1 MAY 2025 20:04
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023/Debian) (preloaded format=pdflatex 2025.1.27)  5 MAY 2025 12:58
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -305,9 +305,9 @@ File: img/AFRL.png Graphic file (type png)
 Package pdftex.def Info: img/AFRL.png  used on input line 123.
 (pdftex.def)             Requested size: 310.49771pt x 67.51028pt.
 
-:tex2html_wrap376:lthtmlCropMarkHeight:=73.51028pt
+:tex2html_wrap377:lthtmlCropMarkHeight:=73.51028pt
 
-:tex2html_wrap376:lthtmlCropMarkDepth:=0.0pt:1ex:=4.30554pt
+:tex2html_wrap377:lthtmlCropMarkDepth:=0.0pt:1ex:=4.30554pt
 Preview: Tightpage -32890 -32890 32890 32890
 [1 </home/convertinoj/Programming/HDL/fusesoc/ip_pub/device/bus_spi_master/docs
 /manual/img/AFRL.png>]
@@ -315,102 +315,102 @@ Preview: Tightpage -32890 -32890 32890 32890
 File: img/diagrams/waveform_write_slave_up.png Graphic file (type png)
 <use img/diagrams/waveform_write_slave_up.png>
 Package pdftex.def Info: img/diagrams/waveform_write_slave_up.png  used on inpu
-t line 138.
+t line 139.
 (pdftex.def)             Requested size: 345.0pt x 74.71742pt.
 
-Overfull \hbox (15.0pt too wide) in paragraph at lines 138--139
+Overfull \hbox (15.0pt too wide) in paragraph at lines 139--140
 [][] 
  []
 
 
-:tex2html_wrap390:lthtmlCropMarkHeight:=80.71742pt
+:tex2html_wrap392:lthtmlCropMarkHeight:=80.71742pt
 
-:tex2html_wrap390:lthtmlCropMarkDepth:=0.0pt:1ex:=4.30554pt
+:tex2html_wrap392:lthtmlCropMarkDepth:=0.0pt:1ex:=4.30554pt
 [2 </home/convertinoj/Programming/HDL/fusesoc/ip_pub/device/bus_spi_master/docs
 /manual/img/diagrams/waveform_write_slave_up.png>]
 <img/diagrams/waveform_loop_test_up.png, id=17, 2025.06563pt x 508.14844pt>
 File: img/diagrams/waveform_loop_test_up.png Graphic file (type png)
 <use img/diagrams/waveform_loop_test_up.png>
 Package pdftex.def Info: img/diagrams/waveform_loop_test_up.png  used on input 
-line 144.
+line 145.
 (pdftex.def)             Requested size: 345.0pt x 86.57018pt.
 
-Overfull \hbox (15.0pt too wide) in paragraph at lines 144--145
+Overfull \hbox (15.0pt too wide) in paragraph at lines 145--146
 [][] 
  []
 
 
-:tex2html_wrap394:lthtmlCropMarkHeight:=92.57018pt
+:tex2html_wrap396:lthtmlCropMarkHeight:=92.57018pt
 
-:tex2html_wrap394:lthtmlCropMarkDepth:=0.0pt:1ex:=4.30554pt
+:tex2html_wrap396:lthtmlCropMarkDepth:=0.0pt:1ex:=4.30554pt
 [3 </home/convertinoj/Programming/HDL/fusesoc/ip_pub/device/bus_spi_master/docs
 /manual/img/diagrams/waveform_loop_test_up.png>]
 <img/diagrams/waveform_irrdy_up.png, id=23, 2025.06563pt x 508.14844pt>
 File: img/diagrams/waveform_irrdy_up.png Graphic file (type png)
 <use img/diagrams/waveform_irrdy_up.png>
 Package pdftex.def Info: img/diagrams/waveform_irrdy_up.png  used on input line
- 150.
+ 151.
 (pdftex.def)             Requested size: 345.0pt x 86.57018pt.
 
-Overfull \hbox (15.0pt too wide) in paragraph at lines 150--151
+Overfull \hbox (15.0pt too wide) in paragraph at lines 151--152
 [][] 
  []
 
 
-:tex2html_wrap398:lthtmlCropMarkHeight:=92.57018pt
+:tex2html_wrap400:lthtmlCropMarkHeight:=92.57018pt
 
-:tex2html_wrap398:lthtmlCropMarkDepth:=0.0pt:1ex:=4.30554pt
+:tex2html_wrap400:lthtmlCropMarkDepth:=0.0pt:1ex:=4.30554pt
 [4 </home/convertinoj/Programming/HDL/fusesoc/ip_pub/device/bus_spi_master/docs
 /manual/img/diagrams/waveform_irrdy_up.png>]
 <img/diagrams/waveform_itoe_up.png, id=29, 2025.06563pt x 508.14844pt>
 File: img/diagrams/waveform_itoe_up.png Graphic file (type png)
 <use img/diagrams/waveform_itoe_up.png>
 Package pdftex.def Info: img/diagrams/waveform_itoe_up.png  used on input line 
-156.
+157.
 (pdftex.def)             Requested size: 345.0pt x 86.57018pt.
 
-Overfull \hbox (15.0pt too wide) in paragraph at lines 156--157
+Overfull \hbox (15.0pt too wide) in paragraph at lines 157--158
 [][] 
  []
 
 
-:tex2html_wrap402:lthtmlCropMarkHeight:=92.57018pt
+:tex2html_wrap404:lthtmlCropMarkHeight:=92.57018pt
 
-:tex2html_wrap402:lthtmlCropMarkDepth:=0.0pt:1ex:=4.30554pt
+:tex2html_wrap404:lthtmlCropMarkDepth:=0.0pt:1ex:=4.30554pt
 [5 </home/convertinoj/Programming/HDL/fusesoc/ip_pub/device/bus_spi_master/docs
 /manual/img/diagrams/waveform_itoe_up.png>]
 <img/diagrams/waveform_eop_up.png, id=35, 2025.06563pt x 508.14844pt>
 File: img/diagrams/waveform_eop_up.png Graphic file (type png)
 <use img/diagrams/waveform_eop_up.png>
 Package pdftex.def Info: img/diagrams/waveform_eop_up.png  used on input line 1
-62.
+63.
 (pdftex.def)             Requested size: 345.0pt x 86.57018pt.
 
-Overfull \hbox (15.0pt too wide) in paragraph at lines 162--163
+Overfull \hbox (15.0pt too wide) in paragraph at lines 163--164
 [][] 
  []
 
 
-:tex2html_wrap406:lthtmlCropMarkHeight:=92.57018pt
+:tex2html_wrap408:lthtmlCropMarkHeight:=92.57018pt
 
-:tex2html_wrap406:lthtmlCropMarkDepth:=0.0pt:1ex:=4.30554pt
+:tex2html_wrap408:lthtmlCropMarkDepth:=0.0pt:1ex:=4.30554pt
 [6 </home/convertinoj/Programming/HDL/fusesoc/ip_pub/device/bus_spi_master/docs
 /manual/img/diagrams/waveform_eop_up.png>]
 <img/diagrams/waveform_loop_test_axil.png, id=41, 2231.33624pt x 777.65532pt>
 File: img/diagrams/waveform_loop_test_axil.png Graphic file (type png)
 <use img/diagrams/waveform_loop_test_axil.png>
 Package pdftex.def Info: img/diagrams/waveform_loop_test_axil.png  used on inpu
-t line 168.
+t line 169.
 (pdftex.def)             Requested size: 345.0pt x 120.23868pt.
 
-Overfull \hbox (15.0pt too wide) in paragraph at lines 168--169
+Overfull \hbox (15.0pt too wide) in paragraph at lines 169--170
 [][] 
  []
 
 
-:tex2html_wrap410:lthtmlCropMarkHeight:=126.23868pt
+:tex2html_wrap412:lthtmlCropMarkHeight:=126.23868pt
 
-:tex2html_wrap410:lthtmlCropMarkDepth:=0.0pt:1ex:=4.30554pt
+:tex2html_wrap412:lthtmlCropMarkDepth:=0.0pt:1ex:=4.30554pt
 [7 </home/convertinoj/Programming/HDL/fusesoc/ip_pub/device/bus_spi_master/docs
 /manual/img/diagrams/waveform_loop_test_axil.png>]
 <img/diagrams/waveform_loop_test_wishbone_standard.png, id=48, 2231.33624pt x 4
@@ -419,27 +419,27 @@ File: img/diagrams/waveform_loop_test_wishbone_standard.png Graphic file (type
 png)
 <use img/diagrams/waveform_loop_test_wishbone_standard.png>
 Package pdftex.def Info: img/diagrams/waveform_loop_test_wishbone_standard.png 
- used on input line 174.
+ used on input line 175.
 (pdftex.def)             Requested size: 345.0pt x 74.84363pt.
 
-Overfull \hbox (15.0pt too wide) in paragraph at lines 174--175
+Overfull \hbox (15.0pt too wide) in paragraph at lines 175--176
 [][] 
  []
 
 
-:tex2html_wrap414:lthtmlCropMarkHeight:=80.84363pt
+:tex2html_wrap416:lthtmlCropMarkHeight:=80.84363pt
 
-:tex2html_wrap414:lthtmlCropMarkDepth:=0.0pt:1ex:=4.30554pt
+:tex2html_wrap416:lthtmlCropMarkDepth:=0.0pt:1ex:=4.30554pt
 [8 </home/convertinoj/Programming/HDL/fusesoc/ip_pub/device/bus_spi_master/docs
 /manual/img/diagrams/waveform_loop_test_wishbone_standard.png>]
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 189.
+(Font)              <7> on input line 190.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 189.
+(Font)              <5> on input line 190.
 
-:tex2html_wrap_inline192:lthtmlCropMarkHeight:=6.0pt
+:tex2html_wrap_inline193:lthtmlCropMarkHeight:=6.0pt
 
-:tex2html_wrap_inline192:lthtmlCropMarkDepth:=0.0pt:1ex:=4.30554pt
+:tex2html_wrap_inline193:lthtmlCropMarkDepth:=0.0pt:1ex:=4.30554pt
 [9] (./bus_spi_master_images.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1

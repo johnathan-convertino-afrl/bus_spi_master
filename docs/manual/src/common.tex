@@ -27,9 +27,9 @@
 \subsection{Introduction}
 
 \par
-BUS SPI Master is a core that emulates and extends the Altera SPI IP core. This is a SPI master device only. It is
+BUS SPI Master core emulates and extends the Altera SPI IP core. This is a SPI master device only. It is
 currently available as a AXI Lite, Wishbone Standard, and uP bus IP core. The Altera core this is based on has Linux
-and uboot drivers, so by mimicking it this core has instant access to drivers. There is a extension register for control
+and uboot drivers, by mimicking it this core has instant access to its support software. There is a extension register for control
 that allows for changes to the SPI Master the Altera IP does not have. The following is information on how to use the
 device in an FPGA, software, and in simulation.
 
@@ -52,20 +52,20 @@ The following are the dependencies of the cores.
 
 \subsection{In a Project}
 \par
-First, pick a core that matches the target bus in question. Then connect the BUS SPI MASTER core to that bus. Once this is complete the SPI pins will need
-to be routed to the slave SPI devices
+First, pick a core that matches the target bus in question. Then connect the BUS SPI MASTER core to that bus. Once this is complete the SPI pins will need to be routed to the slave SPI devices. The core can be used with a 32 bit or 16 bit databus (4 or 2 bytes). Any other size is not supported and will result in a core that acts strange or don't build at all.
 
 \section{Architecture}
 \par
-This core is made up of other cores that are documented in detail in there source. The cores this is made up of are the,
+This core is made up of other cores that are documented in detail in their source. The cores this is made up of are:
 \begin{itemize}
   \item \textbf{axis\_spi\_master} Interface with SPI master and present the data over AXIS interface (see core for documentation).
   \item \textbf{up\_axi} An AXI Lite to uP converter core (see core for documentation).
   \item \textbf{up\_wishbone\_standard} A wishbone standard to uP converter core (see core for documentation).
-  \item \textbf{up\_spi\_master} Takes uP bus and coverts it to interface to the AXIS SPI (see module documentation for information \ref{Module Documentation}).
+  \item \textbf{up\_spi\_master} Takes uP bus and coverts it for interfacing with the AXIS SPI core (see module documentation for information \ref{Module Documentation}).
 \end{itemize}
 
-For register documentation please see up\_spi\_master in \ref{Module Documentation}
+\subsection{Registers}
+For register bit documentation please see up\_spi\_master subsetion registers in \ref{Module Documentation}
 
 \par
 Interrupts for this core are enabled in the control register. First the general IE bit, interrupt enable, is set to 1. Then bits
@@ -75,9 +75,9 @@ is true. This will stay that way till the tx or rx register is cleared of the EO
 an interrupt when the status bit RRDY is active. This will stay tripped till a word is read. Interrupt transmit ready (ITRDY) when set active will
 trigger an interrupt when the status bit TRDY is active. This will stay tripped till a word is written. Interrupt transmit overrun (ITOE) when set
 active will trigger an interrupt when the status bit TOE is active. This will stay tripped till the status register is written. Interrupt receive
-underrun when set active will trigger an interrupt when the status bit ROE is active. ITOE, TOE, IROE, ROE, and E are only cleared by writing to the
-status register. The status register does NOT write any actual data to the status register, so the status bits are not directly affected. It simply
-resets ROE/TOE to 0. See \ref{Module Documentation} up\_spi\_master for more detail the location and function of register bits.
+underrun (IROE) when set active will trigger an interrupt when the status bit ROE is active. ITOE, TOE, IROE, ROE, and E are only cleared by writing to the
+status register. The status register does NOT write any actual data to the register, status bits are not directly affected. It simply
+resets ROE/TOE to 0. See \ref{Module Documentation} up\_spi\_master for more detail on the location and function of register bits.
 
 \subsection{Waveforms}
 The idealized simulation waveforms are shown below. The values reflect the results of using the icarus backend with surfer view tools.
@@ -125,7 +125,7 @@ contents change and are not the EOP.
 
 \par
 The last two waveforms show the uP to bus adapters in a loopback test. Since it takes two writes to get the SPI slave to
-echo a value written two write previous, the read value will be two writes behind.
+echo a value written in two previous writes, the read value will be two writes behind.
 \begin{figure}[H]
 \caption{loop test AXI Lite}
 \centering
@@ -141,7 +141,7 @@ echo a value written two write previous, the read value will be two writes behin
 \section{Building}
 
 \par
-The BUS SPI MASTER is written in Verilog 2001. It should synthesize in any modern FPGA software. The core comes as a fusesoc packaged core and can be
+The BUS SPI MASTER is written in Verilog 2001. It should synthesize in any modern FPGA software. It comes as a fusesoc packaged core and can be
 included in any other core. Be sure to make sure you have meet the dependencies listed in the previous section.
 
 \subsection{fusesoc}

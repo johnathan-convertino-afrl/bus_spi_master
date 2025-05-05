@@ -3,7 +3,7 @@
 <!--Converted with LaTeX2HTML 2024 (Released January 1, 2024) -->
 <HTML lang="en">
 <HEAD>
-<TITLE>axi_lite_spi_master</TITLE>
+<TITLE>Module Documentation</TITLE>
 
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
 <META NAME="viewport" CONTENT="width=device-width, initial-scale=1.0">
@@ -11,8 +11,8 @@
 
 <LINK REL="STYLESHEET" HREF="html.css">
 
-<LINK REL="next" HREF="bus_spi_master_node26.html">
-<LINK REL="previous" HREF="bus_spi_master_node24.html">
+<LINK REL="next" HREF="bus_spi_master_node35.html">
+<LINK REL="previous" HREF="bus_spi_master_node23.html">
 <LINK REL="next" HREF="bus_spi_master_node26.html">
 </HEAD>
 
@@ -23,33 +23,82 @@
  HREF="bus_spi_master_node26.html">
 <IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
 <A
- HREF="bus_spi_master_node24.html">
+ HREF="html.html">
 <IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
 <A
  HREF="bus_spi_master_node24.html">
 <IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A> 
-<A ID="tex2html149"
+<A ID="tex2html143"
   HREF="bus_spi_master_node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALT="contents" SRC="contents.png"></A>  
 <BR>
 <B> Next:</B> <A
- HREF="bus_spi_master_node26.html">wishbone_standard_spi_master</A>
+ HREF="bus_spi_master_node26.html">axi_lite_spi_master</A>
 <B> Up:</B> <A
- HREF="bus_spi_master_node24.html">Module Documentation</A>
+ HREF="html.html">html</A>
 <B> Previous:</B> <A
- HREF="bus_spi_master_node24.html">Module Documentation</A>
- &nbsp; <B>  <A ID="tex2html150"
+ HREF="bus_spi_master_node24.html">cocotb</A>
+ &nbsp; <B>  <A ID="tex2html144"
   HREF="bus_spi_master_node1.html">Contents</A></B> 
 <BR>
 <BR></DIV>
 <!--End of Navigation Panel-->
 
-<H2><A ID="SECTION00061000000000000000"></A>
+<H1><A ID="SECTION00060000000000000000"></A> <A ID="Module_Documentation"></A>
 <BR>
-<a href="../files/axi_lite_spi_master-v.html">axi_lite_spi_master</a>
-</H2>
+Module Documentation
+</H1>
 
 <P>
+up_spi_master is the module that integrates the AXIS SPI MASTER core.
+This uses inputs/outputs for data tied directly to registers mapped in the uP bus.
+The uP bus is the microprocessor bus based on Analog Devices design. It resembles a APB bus in design,
+and is the bridge to other buses BUS SPI MASTER can use. This makes changing for AXI Lite, to Wishbone to whatever
+quick and painless.
+
+<P>
+axi_lite_spi module adds a AXI Lite to uP (microprocessor) bus converter. The converter is
+from Analog Devices.
+
+<P>
+wishbone_standard_spi module adds a Wishbone Standard to uP (microprocessor) bus converter. This
+converter was designed for Wishbone Standard only, NOT pipelined or Registered (cti).
+
+<P>
+<BR>
+<BR>
+<BR>
+<BR>
+
+<P>
+The next sections document these modules. up_spi_master contains the register map explained, and what the various bits do.
+
+<P>
+<BR><HR>
+<!--Table of Child-Links-->
+<A ID="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL CLASS="ChildLinks">
+<LI><A ID="tex2html145"
+  HREF="bus_spi_master_node26.html"><a href="../files/axi_lite_spi_master-v.html">axi_lite_spi_master</a></A>
+<LI><A ID="tex2html146"
+  HREF="bus_spi_master_node27.html"><a href="../files/wishbone_standard_spi_master-v.html">wishbone_standard_spi_master</a></A>
+<LI><A ID="tex2html147"
+  HREF="bus_spi_master_node28.html"><a href="../files/up_spi_master-v.html">up_spi_master</a></A>
+<LI><A ID="tex2html148"
+  HREF="bus_spi_master_node29.html"><a href="../files2/tb_cocotb_axi_lite-py.html">cocotb axi lite python</a></A>
+<LI><A ID="tex2html149"
+  HREF="bus_spi_master_node30.html"><a href="../files2/tb_cocotb_axi_lite-v.html">cocotb axi lite verilog</a></A>
+<LI><A ID="tex2html150"
+  HREF="bus_spi_master_node31.html"><a href="../files2/tb_cocotb_up-py.html">cocotb up python</a></A>
+<LI><A ID="tex2html151"
+  HREF="bus_spi_master_node32.html"><a href="../files2/tb_cocotb_up-v.html">cocotb up verilog</a></A>
+<LI><A ID="tex2html152"
+  HREF="bus_spi_master_node33.html"><a href="../files2/tb_cocotb_wishbone_standard-py.html">wishbone standard python</a></A>
+<LI><A ID="tex2html153"
+  HREF="bus_spi_master_node34.html"><a href="../files2/tb_cocotb_wishbone_standard-v.html">wishbone standard verilog</a></A>
+</UL>
+<!--End of Table of Child-Links-->
 <BR><HR>
 
 </BODY>

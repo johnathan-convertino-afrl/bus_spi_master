@@ -3,7 +3,7 @@
 <!--Converted with LaTeX2HTML 2024 (Released January 1, 2024) -->
 <HTML lang="en">
 <HEAD>
-<TITLE>Waveforms</TITLE>
+<TITLE>Registers</TITLE>
 
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
 <META NAME="viewport" CONTENT="width=device-width, initial-scale=1.0">
@@ -11,6 +11,7 @@
 
 <LINK REL="STYLESHEET" HREF="html.css">
 
+<LINK REL="next" HREF="bus_spi_master_node11.html">
 <LINK REL="previous" HREF="bus_spi_master_node9.html">
 <LINK REL="next" HREF="bus_spi_master_node11.html">
 </HEAD>
@@ -27,133 +28,38 @@
 <A
  HREF="bus_spi_master_node9.html">
 <IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A> 
-<A ID="tex2html93"
+<A ID="tex2html96"
   HREF="bus_spi_master_node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALT="contents" SRC="contents.png"></A>  
 <BR>
 <B> Next:</B> <A
- HREF="bus_spi_master_node11.html">Building</A>
+ HREF="bus_spi_master_node11.html">Waveforms</A>
 <B> Up:</B> <A
  HREF="bus_spi_master_node9.html">Architecture</A>
 <B> Previous:</B> <A
  HREF="bus_spi_master_node9.html">Architecture</A>
- &nbsp; <B>  <A ID="tex2html94"
+ &nbsp; <B>  <A ID="tex2html97"
   HREF="bus_spi_master_node1.html">Contents</A></B> 
 <BR>
 <BR></DIV>
 <!--End of Navigation Panel-->
 
 <H2><A ID="SECTION00031000000000000000">
-Waveforms</A>
+Registers</A>
 </H2>
-The idealized simulation waveforms are shown below. The values reflect the results of using the icarus backend with surfer view tools.
+For register bit documentation please see up_spi_master subsetion registers in <A HREF="bus_spi_master_node25.html#Module_Documentation"><IMG  ALT="[*]" SRC="crossref.png"></A>
 
 <P>
-Write slave is the first uP test that looks at writing to a slave device using the SPI master without reading the received data.
-
-<DIV class="CENTER"><A ID="54"></A>
-<TABLE>
-<CAPTION class="BOTTOM"><STRONG>Figure:</STRONG>
-write slave uP</CAPTION>
-<TR><TD>
-<DIV class="CENTER"><IMG
- STYLE="height: 17.52ex; vertical-align: -0.12ex; " SRC="bus_spi_master_img2.svg"
- ALT="\includegraphics[width=\textwidth]{img/diagrams/waveform_write_slave_up.png}">
-</DIV></TD></TR>
-</TABLE>
-</DIV>
-
-<P>
-Loop test checks for reads and writes on the uP bus.
-
-<DIV class="CENTER"><A ID="58"></A>
-<TABLE>
-<CAPTION class="BOTTOM"><STRONG>Figure:</STRONG>
-loop test uP</CAPTION>
-<TR><TD>
-<DIV class="CENTER"><IMG
- STYLE="height: 20.26ex; vertical-align: -0.12ex; " SRC="bus_spi_master_img3.svg"
- ALT="\includegraphics[width=\textwidth]{img/diagrams/waveform_loop_test_up.png}">
-</DIV></TD></TR>
-</TABLE>
-</DIV>
-
-<P>
-Next are various interrupt enable tests to see if they respond as they should.
-
-<DIV class="CENTER"><A ID="62"></A>
-<TABLE>
-<CAPTION class="BOTTOM"><STRONG>Figure:</STRONG>
-read ready interrupt enabled</CAPTION>
-<TR><TD>
-<DIV class="CENTER"><IMG
- STYLE="height: 20.26ex; vertical-align: -0.12ex; " SRC="bus_spi_master_img4.svg"
- ALT="\includegraphics[width=\textwidth]{img/diagrams/waveform_irrdy_up.png}">
-</DIV></TD></TR>
-</TABLE>
-</DIV>
-
-<P>
-
-<DIV class="CENTER"><A ID="66"></A>
-<TABLE>
-<CAPTION class="BOTTOM"><STRONG>Figure:</STRONG>
-transmit error interrupt enabled</CAPTION>
-<TR><TD>
-<DIV class="CENTER"><IMG
- STYLE="height: 20.26ex; vertical-align: -0.12ex; " SRC="bus_spi_master_img5.svg"
- ALT="\includegraphics[width=\textwidth]{img/diagrams/waveform_itoe_up.png}">
-</DIV></TD></TR>
-</TABLE>
-</DIV>
-
-<P>
-End of packet is a feature added to the Altera IP core in 2019. It is not present in the linux drivers.
-Its functionality is questionable when it comes to being useful. Essentially it allows the device to signal
-bits or a irq if a EOP word matches the transmit or receive register contents. It is cleared when those
-contents change and are not the EOP.
-
-<DIV class="CENTER"><A ID="70"></A>
-<TABLE>
-<CAPTION class="BOTTOM"><STRONG>Figure:</STRONG>
-EOP</CAPTION>
-<TR><TD>
-<DIV class="CENTER"><IMG
- STYLE="height: 20.26ex; vertical-align: -0.12ex; " SRC="bus_spi_master_img6.svg"
- ALT="\includegraphics[width=\textwidth]{img/diagrams/waveform_eop_up.png}">
-</DIV></TD></TR>
-</TABLE>
-</DIV>
-
-<P>
-The last two waveforms show the uP to bus adapters in a loopback test. Since it takes two writes to get the SPI slave to
-echo a value written two write previous, the read value will be two writes behind.
-
-<DIV class="CENTER"><A ID="74"></A>
-<TABLE>
-<CAPTION class="BOTTOM"><STRONG>Figure:</STRONG>
-loop test AXI Lite</CAPTION>
-<TR><TD>
-<DIV class="CENTER"><IMG
- STYLE="height: 28.05ex; vertical-align: -0.12ex; " SRC="bus_spi_master_img7.svg"
- ALT="\includegraphics[width=\textwidth]{img/diagrams/waveform_loop_test_axil.png}">
-</DIV></TD></TR>
-</TABLE>
-</DIV>
-
-<P>
-
-<DIV class="CENTER"><A ID="78"></A>
-<TABLE>
-<CAPTION class="BOTTOM"><STRONG>Figure:</STRONG>
-loop test wishbone standard</CAPTION>
-<TR><TD>
-<DIV class="CENTER"><IMG
- STYLE="height: 17.55ex; vertical-align: -0.12ex; " SRC="bus_spi_master_img8.svg"
- ALT="\includegraphics[width=\textwidth]{img/diagrams/waveform_loop_test_wishbone_standard.png}">
-</DIV></TD></TR>
-</TABLE>
-</DIV>
+Interrupts for this core are enabled in the control register. First the general IE bit, interrupt enable, is set to 1. Then bits
+are choosen that set what conditions the interrupt should be activated for. This interrupt goes active high (1) when a condition becomes
+true. Starting with the interrupt end of packet bit (IEOP), setting this active will enable the interrupt to go off when the status EOP bit
+is true. This will stay that way till the tx or rx register is cleared of the EOP word. Interrupt read ready (IRRDY) when set active will trigger
+an interrupt when the status bit RRDY is active. This will stay tripped till a word is read. Interrupt transmit ready (ITRDY) when set active will
+trigger an interrupt when the status bit TRDY is active. This will stay tripped till a word is written. Interrupt transmit overrun (ITOE) when set
+active will trigger an interrupt when the status bit TOE is active. This will stay tripped till the status register is written. Interrupt receive
+underrun (IROE) when set active will trigger an interrupt when the status bit ROE is active. ITOE, TOE, IROE, ROE, and E are only cleared by writing to the
+status register. The status register does NOT write any actual data to the register, status bits are not directly affected. It simply
+resets ROE/TOE to 0. See <A HREF="bus_spi_master_node25.html#Module_Documentation"><IMG  ALT="[*]" SRC="crossref.png"></A> up_spi_master for more detail on the location and function of register bits.
 
 <P>
 
@@ -168,17 +74,17 @@ loop test wishbone standard</CAPTION>
 <A
  HREF="bus_spi_master_node9.html">
 <IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A> 
-<A ID="tex2html93"
+<A ID="tex2html96"
   HREF="bus_spi_master_node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALT="contents" SRC="contents.png"></A>  
 <BR>
 <B> Next:</B> <A
- HREF="bus_spi_master_node11.html">Building</A>
+ HREF="bus_spi_master_node11.html">Waveforms</A>
 <B> Up:</B> <A
  HREF="bus_spi_master_node9.html">Architecture</A>
 <B> Previous:</B> <A
  HREF="bus_spi_master_node9.html">Architecture</A>
- &nbsp; <B>  <A ID="tex2html94"
+ &nbsp; <B>  <A ID="tex2html97"
   HREF="bus_spi_master_node1.html">Contents</A></B> </DIV>
 <!--End of Navigation Panel-->
 

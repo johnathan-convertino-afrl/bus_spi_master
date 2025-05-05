@@ -3,7 +3,7 @@
 <!--Converted with LaTeX2HTML 2024 (Released January 1, 2024) -->
 <HTML lang="en">
 <HEAD>
-<TITLE>Building</TITLE>
+<TITLE>Waveforms</TITLE>
 
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
 <META NAME="viewport" CONTENT="width=device-width, initial-scale=1.0">
@@ -11,8 +11,7 @@
 
 <LINK REL="STYLESHEET" HREF="html.css">
 
-<LINK REL="next" HREF="bus_spi_master_node22.html">
-<LINK REL="previous" HREF="bus_spi_master_node9.html">
+<LINK REL="previous" HREF="bus_spi_master_node10.html">
 <LINK REL="next" HREF="bus_spi_master_node12.html">
 </HEAD>
 
@@ -23,70 +22,165 @@
  HREF="bus_spi_master_node12.html">
 <IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
 <A
- HREF="html.html">
+ HREF="bus_spi_master_node9.html">
 <IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
 <A
  HREF="bus_spi_master_node10.html">
 <IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A> 
-<A ID="tex2html95"
+<A ID="tex2html98"
   HREF="bus_spi_master_node1.html">
 <IMG WIDTH="65" HEIGHT="24" ALT="contents" SRC="contents.png"></A>  
 <BR>
 <B> Next:</B> <A
- HREF="bus_spi_master_node12.html">fusesoc</A>
+ HREF="bus_spi_master_node12.html">Building</A>
 <B> Up:</B> <A
- HREF="html.html">html</A>
+ HREF="bus_spi_master_node9.html">Architecture</A>
 <B> Previous:</B> <A
- HREF="bus_spi_master_node10.html">Waveforms</A>
- &nbsp; <B>  <A ID="tex2html96"
+ HREF="bus_spi_master_node10.html">Registers</A>
+ &nbsp; <B>  <A ID="tex2html99"
   HREF="bus_spi_master_node1.html">Contents</A></B> 
 <BR>
 <BR></DIV>
 <!--End of Navigation Panel-->
 
-<H1><A ID="SECTION00040000000000000000">
-Building</A>
-</H1>
+<H2><A ID="SECTION00032000000000000000">
+Waveforms</A>
+</H2>
+The idealized simulation waveforms are shown below. The values reflect the results of using the icarus backend with surfer view tools.
 
 <P>
-The BUS SPI MASTER is written in Verilog 2001. It should synthesize in any modern FPGA software. The core comes as a fusesoc packaged core and can be
-included in any other core. Be sure to make sure you have meet the dependencies listed in the previous section.
+Write slave is the first uP test that looks at writing to a slave device using the SPI master without reading the received data.
+
+<DIV class="CENTER"><A ID="55"></A>
+<TABLE>
+<CAPTION class="BOTTOM"><STRONG>Figure:</STRONG>
+write slave uP</CAPTION>
+<TR><TD>
+<DIV class="CENTER"><IMG
+ STYLE="height: 17.52ex; vertical-align: -0.12ex; " SRC="bus_spi_master_img2.svg"
+ ALT="\includegraphics[width=\textwidth]{img/diagrams/waveform_write_slave_up.png}">
+</DIV></TD></TR>
+</TABLE>
+</DIV>
 
 <P>
-<BR><HR>
-<!--Table of Child-Links-->
-<A ID="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+Loop test checks for reads and writes on the uP bus.
 
-<UL CLASS="ChildLinks">
-<LI><A ID="tex2html97"
-  HREF="bus_spi_master_node12.html">fusesoc</A>
-<LI><A ID="tex2html98"
-  HREF="bus_spi_master_node13.html">Source Files</A>
-<UL>
-<LI><A ID="tex2html99"
-  HREF="bus_spi_master_node14.html">axi_lite_spi_master File List</A>
-<LI><A ID="tex2html100"
-  HREF="bus_spi_master_node15.html">wishbone_standard_spi_master File List</A>
-<LI><A ID="tex2html101"
-  HREF="bus_spi_master_node16.html">up_spi_master File List</A>
-</UL>
+<DIV class="CENTER"><A ID="59"></A>
+<TABLE>
+<CAPTION class="BOTTOM"><STRONG>Figure:</STRONG>
+loop test uP</CAPTION>
+<TR><TD>
+<DIV class="CENTER"><IMG
+ STYLE="height: 20.26ex; vertical-align: -0.12ex; " SRC="bus_spi_master_img3.svg"
+ ALT="\includegraphics[width=\textwidth]{img/diagrams/waveform_loop_test_up.png}">
+</DIV></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+Next are various interrupt enable tests to see if they respond as they should.
+
+<DIV class="CENTER"><A ID="63"></A>
+<TABLE>
+<CAPTION class="BOTTOM"><STRONG>Figure:</STRONG>
+read ready interrupt enabled</CAPTION>
+<TR><TD>
+<DIV class="CENTER"><IMG
+ STYLE="height: 20.26ex; vertical-align: -0.12ex; " SRC="bus_spi_master_img4.svg"
+ ALT="\includegraphics[width=\textwidth]{img/diagrams/waveform_irrdy_up.png}">
+</DIV></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+
+<DIV class="CENTER"><A ID="67"></A>
+<TABLE>
+<CAPTION class="BOTTOM"><STRONG>Figure:</STRONG>
+transmit error interrupt enabled</CAPTION>
+<TR><TD>
+<DIV class="CENTER"><IMG
+ STYLE="height: 20.26ex; vertical-align: -0.12ex; " SRC="bus_spi_master_img5.svg"
+ ALT="\includegraphics[width=\textwidth]{img/diagrams/waveform_itoe_up.png}">
+</DIV></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+End of packet is a feature added to the Altera IP core in 2019. It is not present in the linux drivers.
+Its functionality is questionable when it comes to being useful. Essentially it allows the device to signal
+bits or a irq if a EOP word matches the transmit or receive register contents. It is cleared when those
+contents change and are not the EOP.
+
+<DIV class="CENTER"><A ID="71"></A>
+<TABLE>
+<CAPTION class="BOTTOM"><STRONG>Figure:</STRONG>
+EOP</CAPTION>
+<TR><TD>
+<DIV class="CENTER"><IMG
+ STYLE="height: 20.26ex; vertical-align: -0.12ex; " SRC="bus_spi_master_img6.svg"
+ ALT="\includegraphics[width=\textwidth]{img/diagrams/waveform_eop_up.png}">
+</DIV></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+The last two waveforms show the uP to bus adapters in a loopback test. Since it takes two writes to get the SPI slave to
+echo a value written in two previous writes, the read value will be two writes behind.
+
+<DIV class="CENTER"><A ID="75"></A>
+<TABLE>
+<CAPTION class="BOTTOM"><STRONG>Figure:</STRONG>
+loop test AXI Lite</CAPTION>
+<TR><TD>
+<DIV class="CENTER"><IMG
+ STYLE="height: 28.05ex; vertical-align: -0.12ex; " SRC="bus_spi_master_img7.svg"
+ ALT="\includegraphics[width=\textwidth]{img/diagrams/waveform_loop_test_axil.png}">
+</DIV></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+
+<DIV class="CENTER"><A ID="79"></A>
+<TABLE>
+<CAPTION class="BOTTOM"><STRONG>Figure:</STRONG>
+loop test wishbone standard</CAPTION>
+<TR><TD>
+<DIV class="CENTER"><IMG
+ STYLE="height: 17.55ex; vertical-align: -0.12ex; " SRC="bus_spi_master_img8.svg"
+ ALT="\includegraphics[width=\textwidth]{img/diagrams/waveform_loop_test_wishbone_standard.png}">
+</DIV></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+
+<DIV CLASS="navigation"><HR>
+<!--Navigation Panel-->
+<A
+ HREF="bus_spi_master_node12.html">
+<IMG WIDTH="37" HEIGHT="24" ALT="next" SRC="next.png"></A> 
+<A
+ HREF="bus_spi_master_node9.html">
+<IMG WIDTH="26" HEIGHT="24" ALT="up" SRC="up.png"></A> 
+<A
+ HREF="bus_spi_master_node10.html">
+<IMG WIDTH="63" HEIGHT="24" ALT="previous" SRC="prev.png"></A> 
+<A ID="tex2html98"
+  HREF="bus_spi_master_node1.html">
+<IMG WIDTH="65" HEIGHT="24" ALT="contents" SRC="contents.png"></A>  
 <BR>
-<LI><A ID="tex2html102"
-  HREF="bus_spi_master_node17.html">Targets</A>
-<UL>
-<LI><A ID="tex2html103"
-  HREF="bus_spi_master_node18.html">axi_lite_spi_master Targets</A>
-<LI><A ID="tex2html104"
-  HREF="bus_spi_master_node19.html">wishbone_standard_spi_master Targets</A>
-<LI><A ID="tex2html105"
-  HREF="bus_spi_master_node20.html">up_spi_master Targets</A>
-</UL>
-<BR>
-<LI><A ID="tex2html106"
-  HREF="bus_spi_master_node21.html">Directory Guide</A>
-</UL>
-<!--End of Table of Child-Links-->
-<BR><HR>
+<B> Next:</B> <A
+ HREF="bus_spi_master_node12.html">Building</A>
+<B> Up:</B> <A
+ HREF="bus_spi_master_node9.html">Architecture</A>
+<B> Previous:</B> <A
+ HREF="bus_spi_master_node10.html">Registers</A>
+ &nbsp; <B>  <A ID="tex2html99"
+  HREF="bus_spi_master_node1.html">Contents</A></B> </DIV>
+<!--End of Navigation Panel-->
 
 </BODY>
 </HTML>
