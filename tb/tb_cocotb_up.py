@@ -206,7 +206,7 @@ async def IRRDY_test(dut):
     await reset_dut(dut)
 
     # enable interrupts and enable the receive ready.
-    await up_master.write(CONTROL_REG >> DIVISOR, 1 << 8 | 1 << 7)
+    await up_master.write(CONTROL_REG >> DIVISOR, 1 << 7)
 
     for x in range(0, 256):
       await up_master.write(TX_DATA_REG >> DIVISOR, x)
@@ -237,7 +237,7 @@ async def ITRDY_test(dut):
     await reset_dut(dut)
 
     # enable interrupts and enable the receive ready.
-    await up_master.write(CONTROL_REG >> DIVISOR, 1 << 8 | 1 << 6)
+    await up_master.write(CONTROL_REG >> DIVISOR, 1 << 6)
 
     for x in range(0, 256):
       # wait for a rising edge on the irq. FUTURE: ADD TIMEOUT
@@ -268,7 +268,7 @@ async def ITOE_test(dut):
     await reset_dut(dut)
 
     # enable interrupts and enable the receive ready.
-    await up_master.write(CONTROL_REG >> DIVISOR, 1 << 8 | 1 << 4)
+    await up_master.write(CONTROL_REG >> DIVISOR, 1 << 4)
 
     for x in range(0, 256):
       await up_master.write(TX_DATA_REG >> DIVISOR, x)
@@ -343,7 +343,7 @@ async def IROE_test(dut):
     await reset_dut(dut)
 
     # enable interrupts and enable the receive error.
-    await up_master.write(CONTROL_REG >> DIVISOR, 1 << 8 | 1 << 3)
+    await up_master.write(CONTROL_REG >> DIVISOR, 1 << 3)
 
     for x in range(0, 256):
       await up_master.write(TX_DATA_REG >> DIVISOR, x)

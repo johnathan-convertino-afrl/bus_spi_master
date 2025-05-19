@@ -150,7 +150,7 @@ module up_spi_master #(
    *
    * SSO    - 10, Setting this to 1 will force all ss_n lines to 0 (selected).
    * IEOP   - 9, Generate a interrupt on EOP status bit going active if set to 1.
-   * IE     - 8, Enable (1) or disable(0) all interrupts that are active.
+   * IE     - 8, Generate a interrupt on ANY error, active if set to 1.
    * IRRDY  - 7, Generate a interrupt on RRDY status bit going active if set to 1.
    * ITRDY  - 6, Generate a interrupt on TRDY status bit going active if set to 1.
    * ITOE   - 4, Generate a interrupt on TOE status bit going active if set to 1.
@@ -391,18 +391,15 @@ module up_spi_master #(
     end else begin
       r_irq <= 1'b0;
 
-      if(r_control_reg[IE_BIT] == 1'b1)
-      begin
-        if(r_control_reg[IROE_BIT] & r_roe) r_irq <= 1'b1;
+      if((r_control_reg[IROE_BIT] | r_control_reg[IE_BIT]) & r_roe) r_irq <= 1'b1;
 
-        if(r_control_reg[ITOE_BIT] & r_toe) r_irq <= 1'b1;
+      if((r_control_reg[ITOE_BIT] | r_control_reg[IE_BIT]) & r_toe) r_irq <= 1'b1;
 
-        if(r_control_reg[ITRDY_BIT] & trdy) r_irq <= 1'b1;
+      if(r_control_reg[ITRDY_BIT] & trdy) r_irq <= 1'b1;
 
-        if(r_control_reg[IRRDY_BIT] & rrdy) r_irq <= 1'b1;
+      if(r_control_reg[IRRDY_BIT] & rrdy) r_irq <= 1'b1;
 
-        if(r_control_reg[IEOP_BIT] & r_eop) r_irq <= 1'b1;
-      end
+      if((r_control_reg[IEOP_BIT] | r_control_reg[IE_BIT]) & r_eop) r_irq <= 1'b1;
     end
   end
 
