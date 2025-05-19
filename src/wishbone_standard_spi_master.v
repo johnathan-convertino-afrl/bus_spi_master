@@ -81,22 +81,22 @@ module wishbone_standard_spi_master #(
     parameter DEFAULT_CPHA      = 0
   )
   (
-    input                       clk,
-    input                       rst,
-    input                       s_wb_cyc,
-    input                       s_wb_stb,
-    input                       s_wb_we,
-    input   [ADDRESS_WIDTH-1:0] s_wb_addr,
-    input   [BUS_WIDTH*8-1:0]   s_wb_data_i,
-    input   [BUS_WIDTH-1:0]     s_wb_sel,
-    output                      s_wb_ack,
-    output  [BUS_WIDTH*8-1:0]   s_wb_data_o,
-    output                      s_wb_err,
-    output                      irq,
-    output                      sclk,
-    output                      mosi,
-    input                       miso,
-    output  [SELECT_WIDTH-1:0]  ss_n
+    input  wire                     clk,
+    input  wire                     rst,
+    input  wire                     s_wb_cyc,
+    input  wire                     s_wb_stb,
+    input  wire                     s_wb_we,
+    input  wire [ADDRESS_WIDTH-1:0] s_wb_addr,
+    input  wire [BUS_WIDTH*8-1:0]   s_wb_data_i,
+    input  wire [BUS_WIDTH-1:0]     s_wb_sel,
+    output wire                     s_wb_ack,
+    output wire [BUS_WIDTH*8-1:0]   s_wb_data_o,
+    output wire                     s_wb_err,
+    output wire                     irq,
+    output wire                     sclk,
+    output wire                     mosi,
+    input  wire                     miso,
+    output wire [SELECT_WIDTH-1:0]  ss_n
   );
 
   // var: up_rreq

@@ -81,21 +81,21 @@ module up_spi_master #(
     parameter DEFAULT_CPHA      = 0
   ) 
   (
-    input                                       clk,
-    input                                       rstn,
-    input                                       up_rreq,
-    output                                      up_rack,
-    input   [ADDRESS_WIDTH-(BUS_WIDTH/2)-1:0]   up_raddr,
-    output  [(BUS_WIDTH*8)-1:0]                 up_rdata,
-    input                                       up_wreq,
-    output                                      up_wack,
-    input   [ADDRESS_WIDTH-(BUS_WIDTH/2)-1:0]   up_waddr,
-    input   [(BUS_WIDTH*8)-1:0]                 up_wdata,
-    output                                      irq,
-    output                                      sclk,
-    output                                      mosi,
-    input                                       miso,
-    output  [SELECT_WIDTH-1:0]                  ss_n
+    input  wire                                     clk,
+    input  wire                                     rstn,
+    input  wire                                     up_rreq,
+    output wire                                     up_rack,
+    input  wire [ADDRESS_WIDTH-(BUS_WIDTH/2)-1:0]   up_raddr,
+    output wire [(BUS_WIDTH*8)-1:0]                 up_rdata,
+    input  wire                                     up_wreq,
+    output wire                                     up_wack,
+    input  wire [ADDRESS_WIDTH-(BUS_WIDTH/2)-1:0]   up_waddr,
+    input  wire [(BUS_WIDTH*8)-1:0]                 up_wdata,
+    output wire                                     irq,
+    output wire                                     sclk,
+    output wire                                     mosi,
+    input  wire                                     miso,
+    output wire [SELECT_WIDTH-1:0]                  ss_n
   );
 
   // var: DIVISOR
