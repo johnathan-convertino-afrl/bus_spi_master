@@ -68,8 +68,8 @@ This core is made up of other cores that are documented in detail in their sourc
 For register bit documentation please see up\_spi\_master subsetion registers in \ref{Module Documentation}
 
 \par
-Interrupts for this core are enabled in the control register. First the general IE bit, interrupt enable, is set to 1. Then bits
-are choosen that set what conditions the interrupt should be activated for. This interrupt goes active high (1) when a condition becomes
+Interrupts for this core are enabled in the control register. First the general error IE bit, interrupt enable for all errors, is set to 1.
+All errors will now generate a interrupt. IOE, IROE, etc will not need to be activated. This interrupt goes active high (1) when a condition becomes
 true. Starting with the interrupt end of packet bit (IEOP), setting this active will enable the interrupt to go off when the status EOP bit
 is true. This will stay that way till the tx or rx register is cleared of the EOP word. Interrupt read ready (IRRDY) when set active will trigger
 an interrupt when the status bit RRDY is active. This will stay tripped till a word is read. Interrupt transmit ready (ITRDY) when set active will
