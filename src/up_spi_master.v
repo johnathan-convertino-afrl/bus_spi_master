@@ -399,7 +399,7 @@ module up_spi_master #(
 
       if(r_control_reg[IRRDY_BIT] & rrdy) r_irq <= 1'b1;
 
-      if((r_control_reg[IEOP_BIT] | r_control_reg[IE_BIT]) & r_eop) r_irq <= 1'b1;
+      if(r_control_reg[IEOP_BIT] & r_eop) r_irq <= 1'b1;
     end
   end
 
