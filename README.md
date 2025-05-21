@@ -5,14 +5,19 @@
 
 ---
 
-   author: Jay Convertino   
+  author: Jay Convertino   
+  
+  date: 2025.04.30
+  
+  details: Interface SPI Master at some rate to a AXI LITE or Wishbone Standard interface bus, duplicates Altera SPI IP registers and behavior.
+  
+  license: MIT   
    
-   date: 2025.04.30
-   
-   details: Interface SPI Master at some rate to a AXI LITE or Wishbone Standard interface bus, duplicates Altera SPI IP registers and behavior.
-   
-   license: MIT   
-   
+  Actions:  
+
+  [![Lint Status](../../actions/workflows/lint.yml/badge.svg)](../../actions)  
+  [![Manual Status](../../actions/workflows/manual.yml/badge.svg)](../../actions)  
+  
 ---
 
 ### Version
@@ -31,18 +36,6 @@
 
   - [bus_spi_master.pdf](docs/manual/bus_spi_master.pdf)
   - [github page](https://johnathan-convertino-afrl.github.io/bus_spi_master/)
-
-### DEPENDENCIES
-#### Build
-
-  - AFRL:utility:helper:1.0.0
-  - AFRL:device_converter:axis_spi_master:1.0.0
-  - AFRL:bus:up_wishbone_standard:1.0.0 (FOR WISHBONE)
-  - AD:common:up_axi:1.0.0 (FOR AXI LITE)
-  
-#### Simulation
-
-  - AFRL:simulation:axis_stimulator
 
 ### CORES
 
@@ -99,5 +92,6 @@ This is a list of registers, the manual has details on there usage.
 
   * RUN WITH: (fusesoc run --target=sim VENDER:CORE:NAME:VERSION)
     - default (for IP integration builds)
+    - lint
     - sim_cocotb
 

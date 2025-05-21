@@ -6,7 +6,8 @@
 // date:    2024/04/29
 //
 // about:   Brief
-// uP Core for interfacing with axis spi that emulates the ALTERA SPI IP.
+// uP Core for interfacing with axis spi that emulates the ALTERA SPI IP in
+// MASTER mode.
 //
 // license: License MIT
 // Copyright 2025 Jay Convertino
