@@ -1,5 +1,6 @@
 # BUS SPI MASTER
 ### BUS SPI MASTER (WISHBONE STANDARD, AXI_LITE)
+---
 
 ![image](docs/manual/img/AFRL.png)
 
