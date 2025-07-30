@@ -277,7 +277,7 @@ module up_spi_master #(
   assign error    = r_toe | r_roe;
 
   //we are currently not transmitting and are empty,
-  assign tmt      = (mosi_dcount == 0 ? 1'b1 : 1'b0);
+  assign tmt      = (mosi_dcount == 0 ? (FIFO_ENABLE ? ~s_spi_axis_tvalid : 1'b1) : 1'b0);
 
   //force select of all devices when control reg bit set to 1.
   assign ss_n = (r_control_reg[SSO_BIT] == 1'b1 ? 0 : s_ss_n);
@@ -332,7 +332,7 @@ module up_spi_master #(
 
       //we have a overrun when the core has all its input data and we are ready
       //we are only ready because the previous word was never read.
-      if(miso_dcount == WORD_WIDTH*8 && rrdy)
+      if(miso_dcount == WORD_WIDTH*8 && (FIFO_ENABLE ? ~m_spi_axis_tready: rrdy))
       begin
         r_roe <= 1'b1;
       end
@@ -413,9 +413,9 @@ module up_spi_master #(
 
       if((r_control_reg[ITOE_BIT] | r_control_reg[IE_BIT]) & r_toe) r_irq <= 1'b1;
 
-      if(r_control_reg[ITRDY_BIT] & trdy) r_irq <= 1'b1;
+      if(r_control_reg[ITRDY_BIT] & trdy) r_irq <= 1'b1 & ~r_tx_wen;
 
-      if(r_control_reg[IRRDY_BIT] & rrdy) r_irq <= 1'b1;
+      if(r_control_reg[IRRDY_BIT] & rrdy) r_irq <= 1'b1 & ~r_rx_ren;
 
       if(r_control_reg[IEOP_BIT] & r_eop) r_irq <= 1'b1;
     end

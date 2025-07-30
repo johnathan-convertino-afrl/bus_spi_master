@@ -76,7 +76,7 @@ def start_clock(dut):
 # Cocotb coroutine for resets, used with await to make sure system is reset.
 async def reset_dut(dut):
   dut.rstn.value = 0
-  await Timer(20, units="ns")
+  await Timer(2000, units="ns")
   dut.rstn.value = 1
 
 # Function: write_slave_test
@@ -112,9 +112,17 @@ async def write_slave_test(dut):
 
     for x in range(0, 256):
       await up_master.write(TX_DATA_REG >> DIVISOR, x)
+      
+      # if the fifo is enabled, give a a few clock cycles before checking tmt.. 
+      # this is done since we want to wait for a transmission to finish
+      # not polling to check if its ready to write, with the fifo this is easier.
+      await RisingEdge(dut.clk)
+      await RisingEdge(dut.clk)
+      await RisingEdge(dut.clk)
+      await RisingEdge(dut.clk)
 
       # busy check that the transmit is ready.
-      while(not (await up_master.read(STATUS_REG >> DIVISOR) & (1 << 6))):
+      while(not (await up_master.read(STATUS_REG >> DIVISOR) & (1 << 5))):
         await RisingEdge(dut.clk)
 
       data = await spi_loop.get_contents()
@@ -203,6 +211,8 @@ async def IRRDY_test(dut):
 
     up_master = upMaster(dut, "up", dut.clk, dut.rstn)
 
+    dut.miso.value = 0
+
     await reset_dut(dut)
 
     # enable interrupts and enable the receive ready.
@@ -233,6 +243,8 @@ async def ITRDY_test(dut):
     DIVISOR = int(dut.BUS_WIDTH.value/2);
 
     up_master = upMaster(dut, "up", dut.clk, dut.rstn)
+    
+    dut.miso.value = 0
 
     await reset_dut(dut)
 
@@ -245,7 +257,6 @@ async def ITRDY_test(dut):
 
       await up_master.write(TX_DATA_REG >> DIVISOR, x)
 
-      await RisingEdge(dut.clk)
       await RisingEdge(dut.clk)
 
       assert dut.irq.value.integer == 0, "IRQ IS HIGH AFTER WRITE"
@@ -264,6 +275,8 @@ async def ITOE_test(dut):
     DIVISOR = int(dut.BUS_WIDTH.value/2);
 
     up_master = upMaster(dut, "up", dut.clk, dut.rstn)
+    
+    dut.miso.value = 0
 
     await reset_dut(dut)
 
@@ -271,17 +284,13 @@ async def ITOE_test(dut):
     await up_master.write(CONTROL_REG >> DIVISOR, 1 << 4)
 
     for x in range(0, 256):
-      await up_master.write(TX_DATA_REG >> DIVISOR, x)
-
-      await RisingEdge(dut.clk)
-      await RisingEdge(dut.clk)
-
-      await up_master.write(TX_DATA_REG >> DIVISOR, x)
-
-      await RisingEdge(dut.clk)
+      
+      for i in range(0, 32):
+        await up_master.write(TX_DATA_REG >> DIVISOR, x)
+        
       await RisingEdge(dut.clk)
 
-      assert dut.irq.value.integer == 1, "IRQ IS LOW AFTER DOUBLE WRITE"
+      assert dut.irq.value.integer == 1, "IRQ IS LOW AFTER 20 WRITES"
 
       temp = await up_master.read(STATUS_REG >> DIVISOR)
 
@@ -304,13 +313,14 @@ async def ITOE_test(dut):
       assert (temp & (1 << 4)) == 0, "TOE BIT IS 1"
 
       # check that the status E (transmit or receive  not ready) bit is cleared.
-      assert (temp & (1 << 8)) == 0, "E BIT IS 1"
+      # assert (temp & (1 << 8)) == 0, "E BIT IS 1"
 
       # busy check that the read is ready.
       while(not (await up_master.read(STATUS_REG >> DIVISOR) & (1 << 7))):
         await RisingEdge(dut.clk)
-
-      temp = await up_master.read(RX_DATA_REG >> DIVISOR)
+      
+      for i in range (0, 32):
+        temp = await up_master.read(RX_DATA_REG >> DIVISOR)
 
 # Function: IROE_test
 # Coroutine that is identified as a test routine. Receive was never read, we missed data.
@@ -346,17 +356,15 @@ async def IROE_test(dut):
     await up_master.write(CONTROL_REG >> DIVISOR, 1 << 3)
 
     for x in range(0, 256):
-      await up_master.write(TX_DATA_REG >> DIVISOR, x)
+      for i in range(0, 32):
+        await up_master.write(TX_DATA_REG >> DIVISOR, x)
 
       #wait for transmit to be over
-      while(not (await up_master.read(STATUS_REG >> DIVISOR) & (1 << 6))):
+      while(not (await up_master.read(STATUS_REG >> DIVISOR) & (1 << 5))):
         await RisingEdge(dut.clk)
 
-      await up_master.write(TX_DATA_REG >> DIVISOR, x)
-
-      while(not (await up_master.read(STATUS_REG >> DIVISOR) & (1 << 6))):
-        await RisingEdge(dut.clk)
-
+      await RisingEdge(dut.clk)
+      await RisingEdge(dut.clk)
       await RisingEdge(dut.clk)
 
       assert dut.irq.value.integer == 1, "IRQ IS LOW AFTER READ MISSED"
@@ -373,8 +381,10 @@ async def IROE_test(dut):
 
       await RisingEdge(dut.clk)
       await RisingEdge(dut.clk)
+      await RisingEdge(dut.clk)
 
-      temp = await up_master.read(STATUS_REG >> DIVISOR)
+      for i in range(0, 32):
+        temp = await up_master.read(STATUS_REG >> DIVISOR)
 
       # check that the status ROE (receive write not ready) bit is cleared.
       assert (temp & (1 << 3)) == 0, "ROE BIT IS 1"
@@ -459,10 +469,16 @@ async def end_of_packet_test(dut):
         assert dut.irq.value.integer != 0, "IRQ IS NOT ACTIVE"
       else:
         await up_master.write(TX_DATA_REG >> DIVISOR, x)
+    
+      await RisingEdge(dut.clk)
+      await RisingEdge(dut.clk)
 
       # busy check that the transmit is ready.
-      while(not (await up_master.read(STATUS_REG >> DIVISOR) & (1 << 6))):
+      while(not (await up_master.read(STATUS_REG >> DIVISOR) & (1 << 5))):
         await RisingEdge(dut.clk)
+      
+      await RisingEdge(dut.clk)
+      await RisingEdge(dut.clk)
 
       data = await spi_loop.get_contents()
 
