@@ -78,7 +78,8 @@ module tb_cocotb #(
     parameter SELECT_WIDTH      = 16,
     parameter DEFAULT_RATE_DIV  = 0,
     parameter DEFAULT_CPOL      = 0,
-    parameter DEFAULT_CPHA      = 0
+    parameter DEFAULT_CPHA      = 0,
+    parameter FIFO_ENABLE       = 0
   )
   (
     input                                       clk,
@@ -119,7 +120,8 @@ module tb_cocotb #(
     .SELECT_WIDTH(SELECT_WIDTH),
     .DEFAULT_RATE_DIV(DEFAULT_RATE_DIV),
     .DEFAULT_CPOL(DEFAULT_CPOL),
-    .DEFAULT_CPHA(DEFAULT_CPHA)
+    .DEFAULT_CPHA(DEFAULT_CPHA),
+    .FIFO_ENABLE(FIFO_ENABLE)
   ) dut (
     .clk(clk),
     .rstn(rstn),

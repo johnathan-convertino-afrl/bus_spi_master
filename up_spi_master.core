@@ -18,6 +18,7 @@ filesets:
     depend:
       - AFRL:utility:helper:1.0.0
       - AFRL:device_converter:axis_spi_master:1.0.0
+      - AFRL:buffer:axis_fifo:1.0.0
     
 targets:
   default: &default
@@ -54,6 +55,7 @@ targets:
       - DEFAULT_RATE_DIV
       - DEFAULT_CPOL
       - DEFAULT_CPHA
+      - FIFO_ENABLE
 
 parameters:
   ADDRESS_WIDTH:
@@ -84,6 +86,12 @@ parameters:
     datatype    : int
     default     : 1
     description : Width of the slave select.
+    paramtype   : vlogparam
+    
+  FIFO_ENABLE:
+    datatype    : int
+    default     : 0
+    description : Enable a RX/TX fifo of 16 words by setting to 1
     paramtype   : vlogparam
 
   DEFAULT_RATE_DIV:

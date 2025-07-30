@@ -52,6 +52,7 @@
  *   DEFAULT_RATE_DIV - Default divider value of the main clock to use for the spi data output clock rate. 0 is 2 (2^(X+1) X is the DEFAULT_RATE_DIV)
  *   DEFAULT_CPOL     - Default clock polarity for the core (0 or 1).
  *   DEFAULT_CPHA     - Default clock phase for the core (0 or 1).
+ *   FIFO_ENABLE      - Enable a 16 word (byte) fifo for RX/TX. Not a standard part of the Altera IP core.
  *
  * Ports:
  *
@@ -79,7 +80,8 @@ module up_spi_master #(
     parameter SELECT_WIDTH      = 16,
     parameter DEFAULT_RATE_DIV  = 0,
     parameter DEFAULT_CPOL      = 0,
-    parameter DEFAULT_CPHA      = 0
+    parameter DEFAULT_CPHA      = 0,
+    parameter FIFO_ENABLE       = 0
   ) 
   (
     input  wire                                     clk,
@@ -106,6 +108,10 @@ module up_spi_master #(
   // var: REG_SIZE
   // Number of bits for the register address
   localparam REG_SIZE = 8;
+
+  // var: FIFO_DEPTH
+  // Depth of the fifo, matches UART LITE (xilinx), so I kept this just cause
+  localparam FIFO_DEPTH = 16;
 
   // Group: Register Information
   // Core has 7 registers at the offsets that follow when at a full 32 bit bus width, Internal address is OFFSET >> BUS_WIDTH/2 (32bit would be h4 >> 2 = 1 for internal address).
@@ -211,6 +217,17 @@ module up_spi_master #(
   wire                      trdy;
   //receive ready is the same as AXIS output (master) valid.
   wire                      rrdy;
+  
+  //axis wires for spi
+  wire [(WORD_WIDTH*8)-1:0] s_spi_axis_tdata;
+  wire                      s_spi_axis_tvalid;
+  wire                      s_spi_axis_tready;
+  
+  wire [(WORD_WIDTH*8)-1:0] m_spi_axis_tdata;
+  wire                      m_spi_axis_tvalid;
+  wire                      m_spi_axis_tready;
+  
+  // wire [SELECT_WIDTH-1:0]   s_slave_select_reg;
 
   //verilog reg
 
@@ -239,7 +256,7 @@ module up_spi_master #(
   reg [(BUS_WIDTH*8)-1:0] r_control_reg;
   reg [(BUS_WIDTH*8)-1:0] r_control_ext_reg;
 
-  //slave selectSSO_BIT
+  //slave select
   reg [SELECT_WIDTH-1:0]   r_slave_select_reg;
 
   //end of packet value
@@ -417,12 +434,12 @@ module up_spi_master #(
   ) inst_axis_spi_master (
     .aclk(clk),
     .arstn(rstn),
-    .s_axis_tdata(r_tx_wdata),
-    .s_axis_tvalid(r_tx_wen),
-    .s_axis_tready(trdy),
-    .m_axis_tdata(rx_rdata),
-    .m_axis_tvalid(rrdy),
-    .m_axis_tready(r_rx_ren),
+    .s_axis_tdata(s_spi_axis_tdata),
+    .s_axis_tvalid(s_spi_axis_tvalid),
+    .s_axis_tready(s_spi_axis_tready),
+    .m_axis_tdata(m_spi_axis_tdata),
+    .m_axis_tvalid(m_spi_axis_tvalid),
+    .m_axis_tready(m_spi_axis_tready),
     .sclk(sclk),
     .mosi(mosi),
     .miso(miso),
@@ -434,6 +451,91 @@ module up_spi_master #(
     .miso_dcount(miso_dcount),
     .mosi_dcount(mosi_dcount)
   );
+  
+  generate
+    if(FIFO_ENABLE == 0) begin : gen_NO_FIFO
+      assign s_spi_axis_tdata   = r_tx_wdata;
+      assign s_spi_axis_tvalid  = r_tx_wen;
+      assign trdy               = s_spi_axis_tready;
+      assign rx_rdata           = m_spi_axis_tdata;
+      assign rrdy               = m_spi_axis_tvalid;
+      assign m_spi_axis_tready  = r_rx_ren;
+    end else begin : gen_FIFO
+      /*
+      * Module: inst_axis_tx_fifo
+      *
+      * SPI trasnmit data fifo.
+      */
+      axis_fifo #(
+        .FIFO_DEPTH(FIFO_DEPTH),
+        .COUNT_WIDTH(0),
+        .BUS_WIDTH(WORD_WIDTH),
+        .USER_WIDTH(1),
+        .DEST_WIDTH(1),
+        .COUNT_DELAY(0),
+        .COUNT_ENA(0)
+      ) inst_axis_tx_fifo (
+        .m_axis_aclk(clk),
+        .m_axis_arstn(rstn),
+        .m_axis_tvalid(s_spi_axis_tvalid),
+        .m_axis_tready(s_spi_axis_tready),
+        .m_axis_tdata(s_spi_axis_tdata),
+        .m_axis_tkeep(),
+        .m_axis_tlast(),
+        .m_axis_tuser(),
+        .m_axis_tdest(),
+        .s_axis_aclk(clk),
+        .s_axis_arstn(rstn),
+        .s_axis_tvalid(r_tx_wen),
+        .s_axis_tready(trdy),
+        .s_axis_tdata(r_tx_wdata),
+        .s_axis_tkeep(~0),
+        .s_axis_tlast(1'b0),
+        .s_axis_tuser(1'b0),
+        .s_axis_tdest(1'b0),
+        .data_count_aclk(1'b0),
+        .data_count_arstn(1'b1),
+        .data_count()
+      );
+      
+      /*
+      * Module: inst_axis_rx_fifo
+      *
+      * SPI received data fifo.
+      */
+      axis_fifo #(
+        .FIFO_DEPTH(FIFO_DEPTH),
+        .COUNT_WIDTH(0),
+        .BUS_WIDTH(WORD_WIDTH),
+        .USER_WIDTH(1),
+        .DEST_WIDTH(1),
+        .COUNT_DELAY(0),
+        .COUNT_ENA(0)
+      ) inst_axis_rx_fifo (
+        .m_axis_aclk(clk),
+        .m_axis_arstn(rstn),
+        .m_axis_tvalid(rrdy),
+        .m_axis_tready(r_rx_ren),
+        .m_axis_tdata(rx_rdata),
+        .m_axis_tkeep(),
+        .m_axis_tlast(),
+        .m_axis_tuser(),
+        .m_axis_tdest(),
+        .s_axis_aclk(clk),
+        .s_axis_arstn(rstn),
+        .s_axis_tvalid(m_spi_axis_tvalid),
+        .s_axis_tready(m_spi_axis_tready),
+        .s_axis_tdata(m_spi_axis_tdata),
+        .s_axis_tkeep(~0),
+        .s_axis_tlast(1'b0),
+        .s_axis_tuser(1'b0),
+        .s_axis_tdest(1'b0),
+        .data_count_aclk(1'b0),
+        .data_count_arstn(1'b1),
+        .data_count()
+      );
+    end
+  endgenerate
 
 endmodule
 
