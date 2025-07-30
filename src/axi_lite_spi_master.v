@@ -50,6 +50,7 @@
  *   DEFAULT_RATE_DIV - Default divider value of the main clock to use for the spi data output clock rate. 0 is 2 (2^(X+1) X is the DEFAULT_RATE_DIV)
  *   DEFAULT_CPOL     - Default clock polarity for the core (0 or 1).
  *   DEFAULT_CPHA     - Default clock phase for the core (0 or 1).
+ *   FIFO_ENABLE      - Enable a 16 word fifo for RX and TX. The chip select will stay asserted between words.
  *
  * Ports:
  *
@@ -88,7 +89,8 @@ module axi_lite_spi_master #(
     parameter SELECT_WIDTH      = 16,
     parameter DEFAULT_RATE_DIV  = 0,
     parameter DEFAULT_CPOL      = 0,
-    parameter DEFAULT_CPHA      = 0
+    parameter DEFAULT_CPHA      = 0,
+    parameter FIFO_ENABLE       = 0
   )
   (
     input  wire                     aclk,
@@ -193,7 +195,8 @@ module axi_lite_spi_master #(
     .SELECT_WIDTH(SELECT_WIDTH),
     .DEFAULT_RATE_DIV(DEFAULT_RATE_DIV),
     .DEFAULT_CPOL(DEFAULT_CPOL),
-    .DEFAULT_CPHA(DEFAULT_CPHA)
+    .DEFAULT_CPHA(DEFAULT_CPHA),
+    .FIFO_ENABLE(FIFO_ENABLE)
   ) inst_up_spi_master (
     .clk(aclk),
     .rstn(arstn),
