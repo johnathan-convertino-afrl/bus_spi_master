@@ -266,7 +266,7 @@ module up_spi_master #(
   reg                     r_irq;
 
   //spi rate is some value that is the clock rate divided by a power of two(from 2 to 16 (rate+1)) for the default... speed ext reg allows any value to be set.
-  reg [31:0]              r_spi_rate;
+  reg [31:0]              r_spi_clock_speed_reg;
 
   //output signals assigned to registers.
   assign up_rack  = r_up_rack;
@@ -306,7 +306,7 @@ module up_spi_master #(
       r_control_ext_reg[CPOL_BIT] <= DEFAULT_CPOL;
       r_control_ext_reg[CPHA_BIT] <= DEFAULT_CPHA;
       // at initial startup and reset make sure to set clock_speed to the default to emulate altera IP.
-      r_spi_rate <= CLOCK_SPEED >> (DEFAULT_RATE_DIV+1);
+      r_spi_clock_speed_reg <= CLOCK_SPEED >> (DEFAULT_RATE_DIV+1);
     end else begin
       r_up_rack   <= 1'b0;
       r_up_wack   <= 1'b0;
@@ -358,6 +358,9 @@ module up_spi_master #(
           EOP_VALUE_REG: begin
             r_up_rdata <= r_eop_reg;
           end
+          SPEED_EXT_REG: begin
+            r_up_rdata <= r_spi_clock_speed_reg;
+          end
           default:begin
             r_up_rdata <= 0;
           end
@@ -392,7 +395,7 @@ module up_spi_master #(
             r_eop_reg <= up_wdata;
           end
           SPEED_EXT_REG: begin
-            r_spi_rate <= up_wdata;
+            r_spi_clock_speed_reg <= up_wdata;
           end
           default:begin
           end
@@ -446,7 +449,7 @@ module up_spi_master #(
     .miso(miso),
     .ssn_i(~r_slave_select_reg),
     .ssn_o(s_ss_n),
-    .rate(r_spi_rate),
+    .rate(r_spi_clock_speed_reg),
     .cpol(r_control_ext_reg[CPOL_BIT]),
     .cpha(r_control_ext_reg[CPHA_BIT]),
     .miso_dcount(miso_dcount),
