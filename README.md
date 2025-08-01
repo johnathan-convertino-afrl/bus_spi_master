@@ -67,6 +67,7 @@ This is a list of registers, the manual has details on there usage.
   * 0x14 = SLAVE_SELECT_REG
   * 0x18 = EOP_VALUE_REG
   * 0x1C = CONTROL_EXT_REG
+  * 0x20 = SPEED_CONTROL_REG
 
 ### COMPONENTS
 #### SRC
