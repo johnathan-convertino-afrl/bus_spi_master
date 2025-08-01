@@ -124,6 +124,7 @@ module up_spi_master #(
   //  <SLAVE_SELECT_REG>  - h14
   //  <EOP_VALUE_REG>     - h18
   //  <CONTROL_EXT_REG>   - h1C
+  //  <SPEED_EXT_REG>     - h20
 
   // Register Address: RX_DATA_REG
   // Defines the address offset for RX DATA OUTPUT
@@ -163,7 +164,6 @@ module up_spi_master #(
    * ITOE   - 4, Generate a interrupt on TOE status bit going active if set to 1.
    * IROE   - 3, Generate a interrupt on ROE status bit going active if set to 1.
    */
-   //
   localparam SSO_BIT    = 10;
   localparam IEOP_BIT   = 9;
   localparam IE_BIT     = 8;
@@ -190,16 +190,16 @@ module up_spi_master #(
   localparam CONTROL_EXT_REG = 8'h1C >> DIVISOR;
   /* Register Bits: Control Extension to add capabilities to Altera IP core.
    *
-   * CPHA     - 5, Clock Phase Bit, 0 or 1 per SPI specs (default value set by IP parameter).
-   * CPOL     - 4, Clock Polarity bit, 0 or 1 per SPI specs (default value set by IP parameter).
-   * RATE_TOP - 3, Top bit for rate control. Divider values are 0 to 15 (2^X+1 where X is the divider value).
-   * RATE_BOT - 0, Bottom bit for rate control.
+   * CPHA     - 1, Clock Phase Bit, 0 or 1 per SPI specs (default value set by IP parameter).
+   * CPOL     - 0, Clock Polarity bit, 0 or 1 per SPI specs (default value set by IP parameter).
    */
-   //
-  localparam CPHA_BIT      = 5;
-  localparam CPOL_BIT      = 4;
-  localparam RATE_TOP_BIT  = 3;
-  localparam RATE_BOT_BIT  = 0;
+  localparam CPHA_BIT      = 1;
+  localparam CPOL_BIT      = 0;
+  // Register Address: SPEED_EXT_REG
+  // Defines the address offset for speed control reg extension
+  // (see diagrams/reg_SPEED_EXT.png)
+  // Valid bits are from BUS_WIDTH*8-1:0, which is the speed of the spi core in HZ.
+  localparam SPEED_EXT_REG = 8'h20 >> DIVISOR;
 
   //slave select can be overridden by the sso bit, which when set to 1 forces all spi selects to be active (0).
   wire [SELECT_WIDTH-1:0]   s_ss_n;
@@ -265,7 +265,7 @@ module up_spi_master #(
   //interrupt
   reg                     r_irq;
 
-  //spi rate is some value that is the clock rate divided by a power of two(from 2 to 16 (rate+1))
+  //spi rate is some value that is the clock rate divided by a power of two(from 2 to 16 (rate+1)) for the default... speed ext reg allows any value to be set.
   reg [31:0]              r_spi_rate;
 
   //output signals assigned to registers.
@@ -305,8 +305,8 @@ module up_spi_master #(
       //future extended drivers will be able to manipulate this.
       r_control_ext_reg[CPOL_BIT] <= DEFAULT_CPOL;
       r_control_ext_reg[CPHA_BIT] <= DEFAULT_CPHA;
-      r_control_ext_reg[RATE_TOP_BIT:RATE_BOT_BIT] <= DEFAULT_RATE_DIV;
-      r_spi_rate <= CLOCK_SPEED >> (r_control_ext_reg[RATE_TOP_BIT:RATE_BOT_BIT]+1);
+      // at initial startup and reset make sure to set clock_speed to the default to emulate altera IP.
+      r_spi_rate <= CLOCK_SPEED >> (DEFAULT_RATE_DIV+1);
     end else begin
       r_up_rack   <= 1'b0;
       r_up_wack   <= 1'b0;
@@ -321,8 +321,6 @@ module up_spi_master #(
       r_up_rdata  <= r_up_rdata;
 
       r_up_rack <= up_rreq;
-
-      r_spi_rate <= CLOCK_SPEED >> (r_control_ext_reg[RATE_TOP_BIT:RATE_BOT_BIT]+1);
 
       //if the transmit or receive words match the end of packet, set eop bit to 1.
       if(r_eop_reg[WORD_WIDTH*8-1:0] == r_tx_wdata || r_eop_reg[WORD_WIDTH*8-1:0] == rx_rdata)
@@ -392,6 +390,9 @@ module up_spi_master #(
           end
           EOP_VALUE_REG: begin
             r_eop_reg <= up_wdata;
+          end
+          SPEED_EXT_REG: begin
+            r_spi_rate <= up_wdata;
           end
           default:begin
           end
