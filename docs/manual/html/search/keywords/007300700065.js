@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("spe",["RegisterAddress"],[["SPEED_EXT_REG",,[["up_spi_master",,,,0,"File:up_spi_master.v:up_spi_master.SPEED_EXT_REG","SystemVerilogModule:up_spi_master:SPEED_EXT_REG"]]]]);

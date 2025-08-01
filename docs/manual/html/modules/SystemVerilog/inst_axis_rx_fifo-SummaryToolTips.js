@@ -1,0 +1,1 @@
+﻿NDSummary.OnToolTipsLoaded("SystemVerilogModule:inst_axis_rx_fifo",{130:"<div class=\"NDToolTip TModule LSystemVerilog\"><div class=\"TTSummary\">SPI received data fifo.</div></div>"});

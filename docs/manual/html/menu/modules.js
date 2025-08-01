@@ -1,1 +1,1 @@
-﻿NDMenu.OnSectionLoaded("modules.js",[[1,"axi_lite_spi_master"],[1,"dut"],[1,"inst_axis_spi"],[1,"inst_up_axi"],[1,"inst_up_spi_master"],[1,"inst_up_wishbone_standard"],[1,"tb_cocotb"],[1,"up_spi_master"],[1,"wishbone_standard_spi_master"]]);
+﻿NDMenu.OnSectionLoaded("modules.js",[[1,"axi_lite_spi_master"],[1,"dut"],[1,"inst_axis_rx_fifo"],[1,"inst_axis_spi"],[1,"inst_axis_tx_fifo"],[1,"inst_up_axi"],[1,"inst_up_spi_master"],[1,"inst_up_wishbone_standard"],[1,"tb_cocotb"],[1,"up_spi_master"],[1,"wishbone_standard_spi_master"]]);

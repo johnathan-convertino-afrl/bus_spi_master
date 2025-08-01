@@ -1,1 +1,1 @@
-﻿NDFramePage.OnPageTitleLoaded("SystemVerilogModule:inst_up_axi","inst_up_axi");NDSummary.OnSummaryLoaded("SystemVerilogModule:inst_up_axi",[["SystemVerilog","SystemVerilog"]],[["Modules","Module"]],[[104,0,0,"inst_up_axi"]]);
+﻿NDFramePage.OnPageTitleLoaded("SystemVerilogModule:inst_up_axi","inst_up_axi");NDSummary.OnSummaryLoaded("SystemVerilogModule:inst_up_axi",[["SystemVerilog","SystemVerilog"]],[["Modules","Module"]],[[169,0,0,"inst_up_axi"]]);
