@@ -376,7 +376,10 @@ module up_spi_master #(
           TX_DATA_REG: begin
             r_tx_wdata  <= up_wdata[(WORD_WIDTH*8)-1:0];
             r_tx_wen    <= 1'b1;
-            r_toe       <= ~trdy;
+            if(trdy == 1'b0)
+            begin
+              r_toe <= ~trdy;
+            end
           end
           STATUS_REG: begin
             r_toe <= 1'b0;
