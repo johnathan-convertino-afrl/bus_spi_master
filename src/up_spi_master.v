@@ -123,8 +123,9 @@ module up_spi_master #(
   //  <RESERVED>          - h10
   //  <SLAVE_SELECT_REG>  - h14
   //  <EOP_VALUE_REG>     - h18
-  //  <CONTROL_EXT_REG>   - h1C
-  //  <SPEED_EXT_REG>     - h20
+  //  <STATUS_EXT_REG>    - h1C
+  //  <CONTROL_EXT_REG>   - h20
+  //  <SPEED_EXT_REG>     - h24
 
   // Register Address: RX_DATA_REG
   // Defines the address offset for RX DATA OUTPUT
@@ -184,17 +185,27 @@ module up_spi_master #(
   // (see diagrams/reg_EOP.png)
   // Valid bits are from BUS_WIDTH*8:0, which are used to check for a word match between rx and/or tx and update status.
   localparam EOP_VALUE_REG = 8'h18 >> DIVISOR;
+  // Register Address: STATUS_EXT_REG
+  // Defines the address offset for control register extensions
+  // (see diagrams/reg_STATUS_EXT.png)
+  localparam STATUS_EXT_REG = 8'h1C >> DIVISOR;
+  /* Register Bits: Status Register, 1 is considered active.
+   *
+   * RESET_TX_ACTIVE  - 2, when 1 TX FIFO reset is active.
+   * RESET_RX_ACTIVE  - 1, when 1 RX FIFO reset is active.
+   * FIFO_ENA         - 0, When 1 the FIFO is enabled.
+   */
   // Register Address: CONTROL_EXT_REG
   // Defines the address offset for control register extensions
   // (see diagrams/reg_CONTROL_EXT.png)
-  localparam CONTROL_EXT_REG = 8'h1C >> DIVISOR;
+  localparam CONTROL_EXT_REG = 8'h20 >> DIVISOR;
   /* Register Bits: Control Extension to add capabilities to Altera IP core.
    *
-   * BLOCK_RX_BIT     - 4, Block RX Valid from reach output, set to 1 to block, 0 for normal operation.
-   * RESET_RX_BIT     - 3, Control Register offset bit for resetting the RX FIFO.
-   * RESET_TX_BIT     - 2, Control Register offset bit for resetting the TX FIFO.
-   * CPHA             - 1, Clock Phase Bit, 0 or 1 per SPI specs (default value set by IP parameter).
-   * CPOL             - 0, Clock Polarity bit, 0 or 1 per SPI specs (default value set by IP parameter).
+   * BLOCK_RX  - 4, Block RX Valid from reach output, set to 1 to block, 0 for normal operation.
+   * RESET_RX  - 3, Control Register offset bit for resetting the RX FIFO.
+   * RESET_TX  - 2, Control Register offset bit for resetting the TX FIFO.
+   * CPHA      - 1, Clock Phase Bit, 0 or 1 per SPI specs (default value set by IP parameter).
+   * CPOL      - 0, Clock Polarity bit, 0 or 1 per SPI specs (default value set by IP parameter).
    */
   localparam BLOCK_RX_BIT  = 4;
   localparam RESET_RX_BIT  = 3;
@@ -205,7 +216,7 @@ module up_spi_master #(
   // Defines the address offset for speed control reg extension
   // (see diagrams/reg_SPEED_EXT.png)
   // Valid bits are from BUS_WIDTH*8-1:0, which is the speed of the spi core in HZ.
-  localparam SPEED_EXT_REG = 8'h20 >> DIVISOR;
+  localparam SPEED_EXT_REG = 8'h24 >> DIVISOR;
 
   //slave select can be overridden by the sso bit, which when set to 1 forces all spi selects to be active (0).
   wire [SELECT_WIDTH-1:0]   s_ss_n;
@@ -238,7 +249,7 @@ module up_spi_master #(
   reg  [FIFO_DEPTH-1:0]     r_rstn_rx_delay;
   reg  [FIFO_DEPTH-1:0]     r_rstn_tx_delay;
 
-  reg [(WORD_WIDTH*8)-1:0] r_tx_wdata;
+  reg  [(WORD_WIDTH*8)-1:0] r_tx_wdata;
   // on tx register write enable data push to core (ignored if not ready).
   reg                     r_tx_wen;
   // on rx register read enable data pop from core (invalid values if not ready).
@@ -360,6 +371,9 @@ module up_spi_master #(
           CONTROL_REG: begin
             r_up_rdata <= r_control_reg;
           end
+          STATUS_EXT_REG: begin
+            r_up_rdata <= {{(BUS_WIDTH*8-3){1'b0}}, ~r_rstn_tx_delay[0], ~r_rstn_rx_delay[0], FIFO_ENABLE};
+          end
           CONTROL_EXT_REG: begin
             r_up_rdata <= r_control_ext_reg;
           end
@@ -389,7 +403,7 @@ module up_spi_master #(
             r_tx_wen    <= 1'b1;
             if(trdy == 1'b0)
             begin
-              r_toe <= ~trdy;
+              r_toe <= 1'b1;
             end
           end
           STATUS_REG: begin
@@ -479,34 +493,6 @@ module up_spi_master #(
       assign rrdy               = m_spi_axis_tvalid & ~r_control_ext_reg[BLOCK_RX_BIT];
       assign m_spi_axis_tready  = r_rx_ren;
     end else begin : gen_FIFO
-      //up control register processing and fifo reset
-      always @(posedge clk)
-      begin
-        if(rstn == 1'b0)
-        begin
-          r_rstn_rx_delay <= ~0;
-          r_rstn_tx_delay <= ~0;
-        end else begin
-          r_rstn_rx_delay <= {1'b1, r_rstn_rx_delay[FIFO_DEPTH-1:1]};
-          r_rstn_tx_delay <= {1'b1, r_rstn_rx_delay[FIFO_DEPTH-1:1]};
-
-          if(r_control_ext_reg[RESET_RX_BIT])
-          begin
-            r_rstn_rx_delay <= {FIFO_DEPTH{1'b0}};
-          end
-
-          if(r_control_ext_reg[RESET_TX_BIT])
-          begin
-            r_rstn_tx_delay <= {FIFO_DEPTH{1'b0}};
-          end
-        end
-      end
-      
-      /*
-      * Module: inst_axis_tx_fifo
-      *
-      * SPI trasnmit data fifo.
-      */
       axis_fifo #(
         .FIFO_DEPTH(FIFO_DEPTH),
         .COUNT_WIDTH(0),
@@ -526,7 +512,7 @@ module up_spi_master #(
         .m_axis_tuser(),
         .m_axis_tdest(),
         .s_axis_aclk(clk),
-        .s_axis_arstn(rstn),
+        .s_axis_arstn(rstn & r_rstn_tx_delay[0]),
         .s_axis_tvalid(r_tx_wen),
         .s_axis_tready(trdy),
         .s_axis_tdata(r_tx_wdata),
@@ -539,11 +525,6 @@ module up_spi_master #(
         .data_count()
       );
       
-      /*
-      * Module: inst_axis_rx_fifo
-      *
-      * SPI received data fifo.
-      */
       axis_fifo #(
         .FIFO_DEPTH(FIFO_DEPTH),
         .COUNT_WIDTH(0),
@@ -563,7 +544,7 @@ module up_spi_master #(
         .m_axis_tuser(),
         .m_axis_tdest(),
         .s_axis_aclk(clk),
-        .s_axis_arstn(rstn),
+        .s_axis_arstn(rstn & r_rstn_rx_delay[0]),
         .s_axis_tvalid(m_spi_axis_tvalid & ~r_control_ext_reg[BLOCK_RX_BIT]),
         .s_axis_tready(m_spi_axis_tready),
         .s_axis_tdata(m_spi_axis_tdata),
@@ -575,6 +556,28 @@ module up_spi_master #(
         .data_count_arstn(1'b1),
         .data_count()
       );
+      
+      always @(posedge clk)
+      begin
+        if(rstn == 1'b0)
+        begin
+          r_rstn_rx_delay <= ~0;
+          r_rstn_tx_delay <= ~0;
+        end else begin
+          r_rstn_rx_delay <= {1'b1, r_rstn_rx_delay[FIFO_DEPTH-1:1]};
+          r_rstn_tx_delay <= {1'b1, r_rstn_tx_delay[FIFO_DEPTH-1:1]};
+
+          if(r_control_ext_reg[RESET_RX_BIT])
+          begin
+            r_rstn_rx_delay <= {FIFO_DEPTH{1'b0}};
+          end
+
+          if(r_control_ext_reg[RESET_TX_BIT])
+          begin
+            r_rstn_tx_delay <= {FIFO_DEPTH{1'b0}};
+          end
+        end
+      end
     end
   endgenerate
 
