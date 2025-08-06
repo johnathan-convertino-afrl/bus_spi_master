@@ -190,9 +190,15 @@ module up_spi_master #(
   localparam CONTROL_EXT_REG = 8'h1C >> DIVISOR;
   /* Register Bits: Control Extension to add capabilities to Altera IP core.
    *
-   * CPHA     - 1, Clock Phase Bit, 0 or 1 per SPI specs (default value set by IP parameter).
-   * CPOL     - 0, Clock Polarity bit, 0 or 1 per SPI specs (default value set by IP parameter).
+   * BLOCK_RX_BIT     - 4, Block RX Valid from reach output, set to 1 to block, 0 for normal operation.
+   * RESET_RX_BIT     - 3, Control Register offset bit for resetting the RX FIFO.
+   * RESET_TX_BIT     - 2, Control Register offset bit for resetting the TX FIFO.
+   * CPHA             - 1, Clock Phase Bit, 0 or 1 per SPI specs (default value set by IP parameter).
+   * CPOL             - 0, Clock Polarity bit, 0 or 1 per SPI specs (default value set by IP parameter).
    */
+  localparam BLOCK_RX_BIT  = 4;
+  localparam RESET_RX_BIT  = 3;
+  localparam RESET_TX_BIT  = 2;
   localparam CPHA_BIT      = 1;
   localparam CPOL_BIT      = 0;
   // Register Address: SPEED_EXT_REG
@@ -226,10 +232,11 @@ module up_spi_master #(
   wire [(WORD_WIDTH*8)-1:0] m_spi_axis_tdata;
   wire                      m_spi_axis_tvalid;
   wire                      m_spi_axis_tready;
-  
-  // wire [SELECT_WIDTH-1:0]   s_slave_select_reg;
 
   //verilog reg
+  //fifo internal reset
+  reg  [FIFO_DEPTH-1:0]     r_rstn_rx_delay;
+  reg  [FIFO_DEPTH-1:0]     r_rstn_tx_delay;
 
   reg [(WORD_WIDTH*8)-1:0] r_tx_wdata;
   // on tx register write enable data push to core (ignored if not ready).
@@ -321,6 +328,10 @@ module up_spi_master #(
       r_up_rdata  <= r_up_rdata;
 
       r_up_rack <= up_rreq;
+      
+      //clear reset bits
+      r_control_ext_reg[RESET_RX_BIT] <= 1'b0;
+      r_control_ext_reg[RESET_TX_BIT] <= 1'b0;
 
       //if the transmit or receive words match the end of packet, set eop bit to 1.
       if(r_eop_reg[WORD_WIDTH*8-1:0] == r_tx_wdata || r_eop_reg[WORD_WIDTH*8-1:0] == rx_rdata)
@@ -465,9 +476,32 @@ module up_spi_master #(
       assign s_spi_axis_tvalid  = r_tx_wen;
       assign trdy               = s_spi_axis_tready;
       assign rx_rdata           = m_spi_axis_tdata;
-      assign rrdy               = m_spi_axis_tvalid;
+      assign rrdy               = m_spi_axis_tvalid & ~r_control_ext_reg[BLOCK_RX_BIT];
       assign m_spi_axis_tready  = r_rx_ren;
     end else begin : gen_FIFO
+      //up control register processing and fifo reset
+      always @(posedge clk)
+      begin
+        if(rstn == 1'b0)
+        begin
+          r_rstn_rx_delay <= ~0;
+          r_rstn_tx_delay <= ~0;
+        end else begin
+          r_rstn_rx_delay <= {1'b1, r_rstn_rx_delay[FIFO_DEPTH-1:1]};
+          r_rstn_tx_delay <= {1'b1, r_rstn_rx_delay[FIFO_DEPTH-1:1]};
+
+          if(r_control_ext_reg[RESET_RX_BIT])
+          begin
+            r_rstn_rx_delay <= {FIFO_DEPTH{1'b0}};
+          end
+
+          if(r_control_ext_reg[RESET_TX_BIT])
+          begin
+            r_rstn_tx_delay <= {FIFO_DEPTH{1'b0}};
+          end
+        end
+      end
+      
       /*
       * Module: inst_axis_tx_fifo
       *
@@ -483,7 +517,7 @@ module up_spi_master #(
         .COUNT_ENA(0)
       ) inst_axis_tx_fifo (
         .m_axis_aclk(clk),
-        .m_axis_arstn(rstn),
+        .m_axis_arstn(rstn & r_rstn_tx_delay[0]),
         .m_axis_tvalid(s_spi_axis_tvalid),
         .m_axis_tready(s_spi_axis_tready),
         .m_axis_tdata(s_spi_axis_tdata),
@@ -520,7 +554,7 @@ module up_spi_master #(
         .COUNT_ENA(0)
       ) inst_axis_rx_fifo (
         .m_axis_aclk(clk),
-        .m_axis_arstn(rstn),
+        .m_axis_arstn(rstn & r_rstn_rx_delay[0]),
         .m_axis_tvalid(rrdy),
         .m_axis_tready(r_rx_ren),
         .m_axis_tdata(rx_rdata),
@@ -530,7 +564,7 @@ module up_spi_master #(
         .m_axis_tdest(),
         .s_axis_aclk(clk),
         .s_axis_arstn(rstn),
-        .s_axis_tvalid(m_spi_axis_tvalid),
+        .s_axis_tvalid(m_spi_axis_tvalid & ~r_control_ext_reg[BLOCK_RX_BIT]),
         .s_axis_tready(m_spi_axis_tready),
         .s_axis_tdata(m_spi_axis_tdata),
         .s_axis_tkeep(~0),
