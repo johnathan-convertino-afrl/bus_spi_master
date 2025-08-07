@@ -54,6 +54,7 @@
   *   DEFAULT_RATE_DIV - Default divider value of the main clock to use for the spi data output clock rate. 0 is 2 (2^(X+1) X is the DEFAULT_RATE_DIV)
   *   DEFAULT_CPOL     - Default clock polarity for the core (0 or 1).
   *   DEFAULT_CPHA     - Default clock phase for the core (0 or 1).
+  *   FIFO_ENABLE      - Enable a 16 word fifo for the core, Altera design has no FIFO (may break drivers).
 
 ### REGISTERS
 
@@ -66,8 +67,9 @@ This is a list of registers, the manual has details on there usage.
   * 0x10 = RESERVED
   * 0x14 = SLAVE_SELECT_REG
   * 0x18 = EOP_VALUE_REG
-  * 0x1C = CONTROL_EXT_REG
-  * 0x20 = SPEED_CONTROL_REG
+  * 0x1C = STATUS_EXT_REG
+  * 0x20 = CONTROL_EXT_REG
+  * 0x24 = SPEED_CONTROL_REG
 
 ### COMPONENTS
 #### SRC
