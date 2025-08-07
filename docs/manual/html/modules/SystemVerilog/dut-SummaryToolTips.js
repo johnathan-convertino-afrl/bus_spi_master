@@ -1,1 +1,1 @@
-﻿NDSummary.OnToolTipsLoaded("SystemVerilogModule:dut",{11:"<div class=\"NDToolTip TModule LSystemVerilog\"><div class=\"TTSummary\">Device under test, wishbone_standard_spi_master</div></div>"});
+﻿NDSummary.OnToolTipsLoaded("SystemVerilogModule:dut",{37:"<div class=\"NDToolTip TModule LSystemVerilog\"><div class=\"TTSummary\">Device under test, wishbone_standard_spi_master</div></div>"});

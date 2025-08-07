@@ -1,1 +1,1 @@
-﻿NDSummary.OnToolTipsLoaded("SystemVerilogModule:inst_up_spi_master",{170:"<div class=\"NDToolTip TModule LSystemVerilog\"><div class=\"TTSummary\">Module instance of up_spi_master creating a Logic wrapper for spi master axis bus cores to interface with uP bus.</div></div>"});
+﻿NDSummary.OnToolTipsLoaded("SystemVerilogModule:inst_up_spi_master",{125:"<div class=\"NDToolTip TModule LSystemVerilog\"><div class=\"TTSummary\">Module instance of up_spi_master creating a Logic wrapper for spi master axis bus cores to interface with uP bus.</div></div>"});

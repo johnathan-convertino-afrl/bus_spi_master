@@ -1,1 +1,1 @@
-﻿NDSummary.OnToolTipsLoaded("SystemVerilogModule:inst_up_axi",{169:"<div class=\"NDToolTip TModule LSystemVerilog\"><div class=\"TTSummary\">Module instance of up_axi for the AXI Lite bus to the uP bus.</div></div>"});
+﻿NDSummary.OnToolTipsLoaded("SystemVerilogModule:inst_up_axi",{124:"<div class=\"NDToolTip TModule LSystemVerilog\"><div class=\"TTSummary\">Module instance of up_axi for the AXI Lite bus to the uP bus.</div></div>"});

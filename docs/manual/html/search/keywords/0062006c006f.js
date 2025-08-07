@@ -1,0 +1,1 @@
+﻿NDSearch.OnPrefixDataLoaded("blo",["RegisterBit"],[["BLOCK_RX",,[["up_spi_master",,,,0,"File:up_spi_master.v:up_spi_master.BLOCK_RX","SystemVerilogModule:up_spi_master:BLOCK_RX"]]]]);

@@ -1,1 +1,1 @@
-﻿NDFramePage.OnPageTitleLoaded("SystemVerilogModule:inst_axis_spi","inst_axis_spi");NDSummary.OnSummaryLoaded("SystemVerilogModule:inst_axis_spi",[["SystemVerilog","SystemVerilog"]],[["Modules","Module"]],[[128,0,0,"inst_axis_spi"]]);
+﻿NDFramePage.OnPageTitleLoaded("SystemVerilogModule:inst_axis_spi","inst_axis_spi");NDSummary.OnSummaryLoaded("SystemVerilogModule:inst_axis_spi",[["SystemVerilog","SystemVerilog"]],[["Modules","Module"]],[[171,0,0,"inst_axis_spi"]]);

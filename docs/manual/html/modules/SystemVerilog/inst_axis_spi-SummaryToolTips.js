@@ -1,1 +1,1 @@
-﻿NDSummary.OnToolTipsLoaded("SystemVerilogModule:inst_axis_spi",{128:"<div class=\"NDToolTip TModule LSystemVerilog\"><div class=\"TTSummary\">SPI Master instance with AXIS interface</div></div>"});
+﻿NDSummary.OnToolTipsLoaded("SystemVerilogModule:inst_axis_spi",{171:"<div class=\"NDToolTip TModule LSystemVerilog\"><div class=\"TTSummary\">SPI Master instance with AXIS interface</div></div>"});

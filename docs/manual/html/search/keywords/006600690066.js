@@ -1,1 +1,1 @@
-﻿NDSearch.OnPrefixDataLoaded("fif",["Variable"],[["FIFO_DEPTH",,[["up_spi_master",,,,0,"File:up_spi_master.v:up_spi_master.FIFO_DEPTH","SystemVerilogModule:up_spi_master:FIFO_DEPTH"]]]]);
+﻿NDSearch.OnPrefixDataLoaded("fif",["Variable","RegisterBit"],[["FIFO_DEPTH",,[["up_spi_master",,,,0,"File:up_spi_master.v:up_spi_master.FIFO_DEPTH","SystemVerilogModule:up_spi_master:FIFO_DEPTH"]]],["FIFO_ENA",,[["up_spi_master",,,,1,"File:up_spi_master.v:up_spi_master.FIFO_ENA","SystemVerilogModule:up_spi_master:FIFO_ENA"]]]]);

@@ -1,1 +1,1 @@
-﻿NDSummary.OnToolTipsLoaded("SystemVerilogModule:inst_up_wishbone_standard",{149:"<div class=\"NDToolTip TModule LSystemVerilog\"><div class=\"TTSummary\">Module instance of up_wishbone_standard for the Wishbone Classic Standard bus to the uP bus.</div></div>"});
+﻿NDSummary.OnToolTipsLoaded("SystemVerilogModule:inst_up_wishbone_standard",{104:"<div class=\"NDToolTip TModule LSystemVerilog\"><div class=\"TTSummary\">Module instance of up_wishbone_standard for the Wishbone Classic Standard bus to the uP bus.</div></div>"});
