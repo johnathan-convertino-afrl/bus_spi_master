@@ -260,6 +260,8 @@ module up_spi_master #(
 
   // end of packet value matches current tx or rx value (this is true till the value is removed).
   reg                     r_eop;
+  
+  reg  [SELECT_WIDTH-1:0] r_ss_n;
 
   //up registers
   reg                     r_up_rack;
@@ -298,7 +300,7 @@ module up_spi_master #(
   assign tmt      = (mosi_dcount == 0 ? (FIFO_ENABLE ? ~s_spi_axis_tvalid : 1'b1) : 1'b0);
 
   //force select of all devices when control reg bit set to 1.
-  assign ss_n = (r_control_reg[SSO_BIT] == 1'b1 ? 0 : s_ss_n);
+  assign ss_n = r_ss_n & s_ss_n;
 
   //up registers decoder
   always @(posedge clk)
@@ -312,6 +314,7 @@ module up_spi_master #(
       r_eop       <= 1'b0;
       r_toe       <= 1'b0;
       r_roe       <= 1'b0;
+      r_ss_n      <= ~0;
       r_up_rdata  <= 0;
 
       r_control_reg     <= 0;
@@ -339,6 +342,8 @@ module up_spi_master #(
       r_up_rdata  <= r_up_rdata;
 
       r_up_rack <= up_rreq;
+      
+      r_ss_n <= (r_control_reg[SSO_BIT] == 1'b1 ? {SELECT_WIDTH{1'b0}} : {SELECT_WIDTH{1'b1}});
       
       //clear reset bits
       r_control_ext_reg[RESET_RX_BIT] <= 1'b0;
