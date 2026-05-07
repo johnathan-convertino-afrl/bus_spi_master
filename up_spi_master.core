@@ -17,8 +17,8 @@ filesets:
   dep:
     depend:
       - AFRL:utility:helper:1.0.0
-      - AFRL:device_converter:axis_spi_master:1.0.0
-      - AFRL:buffer:axis_fifo:1.0.0
+      - ">=AFRL:device_converter:axis_spi_master:3"
+      - ">=AFRL:buffer:axis_fifo:1"
     
 targets:
   default: &default
